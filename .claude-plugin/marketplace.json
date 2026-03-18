@@ -1,0 +1,19 @@
+{
+  "$schema": "https://claude.ai/schemas/marketplace.json",
+  "name": "vaultkeeper",
+  "description": "Persoenliches Wissensmanagement: Obsidian Vault als Second Brain + Vorderland Brain als Team-Wissenspipeline",
+  "owner": "svenhorvath",
+  "plugins": [
+    {
+      "name": "vaultkeeper",
+      "description": "Obsidian Vault lesen, Wissen ins Vorderland Brain pushen, Dokumente aufbereiten",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sven Horvath",
+        "url": "https://github.com/svenhorvath"
+      },
+      "source": ".",
+      "category": "productivity"
+    }
+  ]
+}
