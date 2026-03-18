@@ -25,8 +25,10 @@ Auf Windows `python` verwenden (nicht `python3`). Falls `python` nicht im PATH:
 
 ## Konvertierungsregeln
 
-- **XLSX/DOCX** → Immer zu Text (Embeddings API akzeptiert nur Text)
+- **XLSX/DOCX** → Immer zu Text (Embeddings API akzeptiert nur Text); XLSX inkl. Kommentare
+- **DOCX** → Tabellen werden in Dokumentreihenfolge mit Absaetzen extrahiert
 - **PDF** → Direkt kopieren wenn klein genug (n8n-Pipeline verarbeitet PDFs selbst)
+- **Scan-PDF** → Exit Code 2: Claude liest multimodal als Fallback
 - **TXT, MD, CSV** → Direkt kopieren wenn klein genug
 
 ## Qualitaetscheck
@@ -46,8 +48,9 @@ Bei WARNUNG: Dateien bleiben, Hinweise werden ausgegeben.
 | Format | Methode | Library |
 |--------|---------|---------|
 | PDF | Direkt (klein) oder Text via pdfplumber | pdfplumber, PyPDF2 |
-| XLSX/XLS | Text via openpyxl | openpyxl |
-| DOCX | Text via python-docx | python-docx |
+| Scan-PDF | Claude multimodal (Fallback, Exit Code 2) | — |
+| XLSX/XLS | Text via openpyxl inkl. Kommentare | openpyxl |
+| DOCX | Text via python-docx inkl. Tabellen | python-docx |
 | TXT, MD, CSV | Direkt | — |
 
 ## Fehlende Libraries

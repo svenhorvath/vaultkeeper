@@ -98,19 +98,44 @@ def get_xlsx_sheet_names(file_path):
 
 
 def extract_text_from_xlsx(file_path):
-    """Extrahiert Text aus Excel-Dateien mit Bereinigung."""
+    """Extrahiert Text aus Excel-Dateien inkl. Kommentare."""
     try:
         import openpyxl
+        # data_only=True: Formelwerte statt Formeln lesen
         wb = openpyxl.load_workbook(file_path, data_only=True)
         text_parts = []
         for sheet_name in wb.sheetnames:
             ws = wb[sheet_name]
             text_parts.append(f"=== Blatt: {sheet_name} ===\n")
-            for row in ws.iter_rows(values_only=True):
-                cells = [str(c) if c is not None else "" for c in row]
-                line = " | ".join(cells).strip()
-                if line and line != "|":
-                    text_parts.append(line)
+
+            # Header-Zeile erkennen (erste Zeile mit Inhalt)
+            header = []
+            for row in ws.iter_rows(max_row=1):
+                header = [str(c.value).strip() if c.value else f"Spalte{i+1}" for i, c in enumerate(row)]
+
+            for row in ws.iter_rows(min_row=2):
+                entries = []
+                comments = []
+                for i, cell in enumerate(row):
+                    col_name = header[i] if i < len(header) else f"Spalte{i+1}"
+                    cell_text = str(cell.value).strip() if cell.value is not None else ""
+                    # Kommentare extrahieren
+                    if cell.comment:
+                        author = cell.comment.author or "unbekannt"
+                        comment_text = cell.comment.text.strip() if cell.comment.text else ""
+                        comment_text = comment_text.replace("_x000D_", "").replace("\r", "")
+                        comment_text = comment_text.replace("|", ",").replace("\n", " ").strip()
+                        while "  " in comment_text:
+                            comment_text = comment_text.replace("  ", " ")
+                        if comment_text:
+                            comments.append(f"{col_name}: {comment_text} (von {author})")
+                    if cell_text:
+                        entries.append(f"{col_name}: {cell_text}")
+                if entries:
+                    text_parts.append(" | ".join(entries))
+                if comments:
+                    for c in comments:
+                        text_parts.append(f"  Kommentar: {c}")
         return "\n".join(text_parts)
     except ImportError:
         print("FEHLER: openpyxl nicht installiert.")
@@ -119,12 +144,30 @@ def extract_text_from_xlsx(file_path):
 
 
 def extract_text_from_docx(file_path):
-    """Extrahiert Text aus Word-Dokumenten."""
+    """Extrahiert Text aus Word-Dokumenten inkl. Tabellen (in Dokumentreihenfolge)."""
     try:
         import docx
         doc = docx.Document(file_path)
-        text_parts = [p.text for p in doc.paragraphs if p.text.strip()]
-        return "\n\n".join(text_parts)
+        parts = []
+
+        # Elemente in Dokumentreihenfolge durchlaufen (Absaetze + Tabellen gemischt)
+        for element in doc.element.body:
+            tag = element.tag.split("}")[-1] if "}" in element.tag else element.tag
+            if tag == "p":
+                # Absatz
+                para = docx.text.paragraph.Paragraph(element, doc)
+                if para.text.strip():
+                    parts.append(para.text)
+            elif tag == "tbl":
+                # Tabelle
+                table = docx.table.Table(element, doc)
+                for row in table.rows:
+                    cells = [cell.text.strip() for cell in row.cells]
+                    line = " | ".join(c for c in cells if c)
+                    if line:
+                        parts.append(line)
+
+        return "\n\n".join(parts)
     except ImportError:
         print("FEHLER: python-docx nicht installiert.")
         print("Installiere mit: pip install python-docx")
@@ -511,6 +554,12 @@ def prepare_document(file_path, inbox_path):
 
     if suffix == ".pdf":
         text = extract_text_from_pdf(file_path)
+        # Scan-PDF erkennen: pdfplumber findet keine Textebene
+        if len(text.strip()) < MIN_CONTENT_CHARS:
+            print("SCAN-PDF: Keine Textebene gefunden (wahrscheinlich eingescannt).")
+            print("Dieses PDF kann nicht per Text-Extraktion verarbeitet werden.")
+            print("Bitte Claude multimodal verwenden: /prepare-dokument <dateipfad>")
+            sys.exit(2)  # Exit Code 2 = Scan-PDF, kein technischer Fehler
     elif suffix in (".xlsx", ".xls"):
         text = extract_text_from_xlsx(file_path)
     elif suffix == ".docx":
