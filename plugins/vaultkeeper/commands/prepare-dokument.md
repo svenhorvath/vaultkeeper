@@ -10,6 +10,33 @@ Externe Dokumente fuer die Brain-Ingestion-Pipeline aufbereiten.
 Claude liest das Dokument selbst (multimodal) und extrahiert den KOMPLETTEN Inhalt.
 Ergebnis: Eine oder mehrere `.json` Dateien in der Inbox.
 
+## Qualitaetsprinzip — GILT UEBER ALLEM
+
+> **Qualitaet geht ueber alles.** Dieses System ist die Wissensbasis fuer 30+ Kolleg:innen.
+> Jeder verlorene Satz, jeder fehlende Kommentar, jeder zerrissene Kontext ist ein Qualitaetsverlust
+> der sich in schlechteren Antworten niederschlaegt. Lieber zu viel Information als zu wenig.
+
+- **NICHTS ZUSAMMENFASSEN. NICHTS WEGLASSEN. NICHTS UMFORMULIEREN.**
+- **Kein Python-Script.** Claude liest und verarbeitet selbst — kein Informationsverlust.
+- **Bei Unsicherheit fragen.** Lieber einmal zu viel fragen als falsch abbiegen.
+- **Kommentare/Notizen sind Gold.** Sie enthalten Synonyme und Querverweise die die Suche massiv verbessern.
+- **Breadcrumb-Kontext einbauen.** Bei hierarchischen Dokumenten den Eltern-Pfad vor jedem Eintrag setzen.
+
+## Chunking-Architektur
+
+Das Chunking uebernimmt n8n (Recursive Character Text Splitter, 4.000 Zeichen, 500 Overlap).
+Das Plugin muss sich NICHT um Chunk-Groessen kuemmern. Die JSON-Dateien koennen beliebig gross sein.
+
+**Aufgabe des Plugins:** Maximale Qualitaet der Extraktion + intelligente thematische Trennung.
+**Aufgabe von n8n:** Chunking in embedding-taugliche Stuecke.
+
+Damit n8n beim Chunking keinen Kontext zerreisst, baut das Plugin **Breadcrumb-Headers** ein:
+```
+[Dokument > Kapitel > Unterkapitel > Abschnitt]
+Inhalt des Abschnitts...
+```
+So weiss jeder Chunk wo er herkommt, auch wenn n8n ihn vom Rest trennt.
+
 ## Ablauf
 
 ### 1. Datei finden
@@ -29,43 +56,55 @@ Fallback:
 Datei mit dem Read-Tool oeffnen. Claude kann nativ lesen:
 - **PDF**: Text, Tabellen, eingebettete Bilder (beschreiben!)
 - **DOCX**: Paragraphen, Tabellen, Kommentare, Annotationen
-- **XLSX**: Alle Sheets, alle Zellen, Kommentare, Formeln (Ergebniswerte)
+- **XLSX**: Alle Sheets, alle Zellen, Kommentare, Formeln (Ergebniswerte).
+  Fuer XLSX: openpyxl via Bash verwenden (XLSX ist binaer, Read-Tool kann das nicht).
+  `openpyxl.load_workbook(path, data_only=False)` — OHNE data_only damit Kommentare lesbar sind.
 - **Bilder** (PNG, JPG): Inhalt beschreiben
 - **TXT, MD, CSV**: Direkt lesen
 
 ### 4. Vollstaendige Text-Extraktion
 
-Den KOMPLETTEN Inhalt als strukturierten Klartext extrahieren. Regeln:
+Den KOMPLETTEN Inhalt als strukturierten Klartext extrahieren:
 
-- **NICHTS ZUSAMMENFASSEN. NICHTS WEGLASSEN. NICHTS UMFORMULIEREN.**
 - **1:1 Abschrift.** Jedes Wort, jede Zahl, jeder Satz — genau so wie im Original.
 - **Kein Interpretieren, kein Kuerzen.** Auch redundante Inhalte uebernehmen.
 - **Tabellen** als lesbare Textform mit Pipe-Trennung (`|`). Jede Zeile, jede Zelle.
-- **Bilder/Grafiken** beschreiben: "Grafik: [Detaillierte Beschreibung, alle Texte, Zahlen, Beschriftungen]"
-- **Kommentare/Annotationen** kennzeichnen: "Kommentar: [exakter Wortlaut]"
+- **Bilder/Grafiken** beschreiben: "Grafik: [Detaillierte Beschreibung, alle Texte, Zahlen]"
+- **Kommentare/Annotationen/Notizen** kennzeichnen: "Notiz: [exakter Wortlaut]"
+  Diese enthalten oft Synonyme und Schlagworte — fuer die Suche in Qdrant kritisch wichtig.
 - **Struktur exakt beibehalten**: Ueberschriften, Abschnitte, Nummerierungen.
 - **Sprache exakt beibehalten**: Nicht uebersetzen, nicht korrigieren, Tippfehler beibehalten.
 
-### 5. Struktur analysieren und Splitplan erstellen
+### 5. Breadcrumb-Headers einbauen
 
-**Immer die Dokumentstruktur analysieren** — unabhaengig von der Groesse.
+Bei hierarchischen Dokumenten (Aktenplaene, Gesetze, Handbuecher mit Kapiteln):
+
+Vor jedem Eintrag den **vollstaendigen Pfad** als Breadcrumb setzen:
+```
+[Dokument > Hauptkategorie > Unterkategorie > Abschnitt]
+Schluessel  Kurzbezeichnung
+  Notiz: Synonyme, Querverweise, alternative Begriffe
+```
+
+Das stellt sicher dass n8n beim Chunking den Kontext nicht zerreisst.
+Breadcrumbs werden mit-embedded und verbessern die semantische Suche um ~35%.
+
+### 6. Struktur analysieren und Splitplan erstellen
 
 Erkenne ob das Dokument klare logische Abschnitte hat:
-- Nummerierte Kapitel oder Hauptkategorien (z.B. `[xx0]`, `1.`, `A.`)
+- Nummerierte Kapitel oder Hauptkategorien
 - Benannte Abschnitte oder Themenbloecke
-- Wiederholende Strukturmuster (z.B. Formular-Typen, Prozess-Schritte)
 - Bei XLSX: Sheets als natuerliche Grenzen
 
-**Splitplan dem User vorlegen und bestaetigen lassen:**
-> "Das Dokument hat 10 Hauptkategorien. Ich wuerde es in 10 JSON-Dateien aufteilen, eine pro Kategorie. Soll ich so vorgehen?"
+**Splitplan dem User vorlegen und bestaetigen lassen.**
 
 **Splitregeln:**
-- **Klare Struktur vorhanden** → nach logischen Grenzen splitten, nicht nach Groesse
-- **Keine klare Struktur, unter 40 KB Text** → eine Datei
-- **Keine klare Struktur, ueber 40 KB Text** → an natuerlichen Textgrenzen aufteilen
+- **Klare Struktur vorhanden** → nach logischen Grenzen splitten (thematisch, nicht nach Groesse!)
+- **Keine klare Struktur** → eine einzige JSON-Datei (n8n chunked automatisch)
+- **Kein KB-Limit.** Die JSON kann beliebig gross sein. n8n uebernimmt das Chunking.
 - **Kein Overlap** zwischen Dateien — saubere thematische Trennung
 
-### 6. JSON-Dateien erstellen
+### 7. JSON-Dateien erstellen
 
 **Eine `.json` Datei pro Abschnitt** in die Inbox schreiben.
 
@@ -84,17 +123,16 @@ Erkenne ob das Dokument klare logische Abschnitte hat:
   "erstellt_am": "YYYY-MM-DD",
   "geprueft_am": "YYYY-MM-DD",
   "berechtigung": "alle",
-  "content": "[Der vollstaendige extrahierte Text dieses Abschnitts]"
+  "content": "[Der vollstaendige extrahierte Text mit Breadcrumbs]"
 }
 ```
 
 **Kontext-Header im `content`-Feld:**
-Jeder Abschnitt beginnt im `content` mit:
 ```
 [Dokumenttitel]
 Abschnitt: [Abschnittsname]
 ================================================================================
-[Inhalt]
+[Inhalt mit Breadcrumbs]
 ```
 
 **Metadaten-Regeln:**
@@ -120,7 +158,7 @@ Abschnitt: [Abschnittsname]
 
 **KEIN FELD DARF LEER BLEIBEN.** Alle Werte aus dem Inhalt ableiten.
 
-### 7. Ergebnis melden
+### 8. Ergebnis melden
 
 Dem User mitteilen:
 - Welche JSON-Dateien erstellt wurden (mit Titel und Bereich)
@@ -138,9 +176,3 @@ Dem User mitteilen:
 ## Unterstuetzte Formate
 
 PDF, XLSX, XLS, DOCX, TXT, MD, CSV, PNG, JPG
-
-## Qualitaetsprinzip
-
-- **Qualitaet vor Geschwindigkeit.** Lieber laenger lesen als Informationen verlieren.
-- **Bei Unsicherheit fragen.** Wenn ein Dokument unklar ist, den User fragen statt raten.
-- **Kein Python-Script.** Claude liest und verarbeitet selbst — kein Informationsverlust.
