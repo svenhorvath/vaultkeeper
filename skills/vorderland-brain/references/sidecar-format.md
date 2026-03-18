@@ -30,16 +30,18 @@ Beispiel:
 
 ### Feldregeln
 
-| Feld | Pflicht | Beschreibung |
-|------|---------|--------------|
-| title | Ja | Klarer, beschreibender Titel |
-| document_type | Ja | Art des Dokuments |
-| bereich | Ja | Fachbereich — aus Kontext ableiten |
-| abteilung | Ja | Immer "BAV" |
-| verantwortlich | Ja | Immer "Sven Horvath" |
-| erstellt_am | Ja | Erstelldatum im Format YYYY-MM-DD |
-| geprueft_am | Ja | Gleich wie erstellt_am bei neuen Dokumenten |
-| berechtigung | Ja | Zugriffsebene — Standard: "alle" |
+> **KEIN FELD DARF LEER BLEIBEN. Alle Werte aus dem Inhalt ableiten — niemals "" schreiben.**
+
+| Feld | Pflicht | Wert |
+|------|---------|------|
+| title | Ja | Klarer, beschreibender Titel aus dem Inhalt |
+| document_type | Ja | Aus Inhalt ableiten: `faq`, `anleitung`, `zettel`, `protokoll`, `prozess`, `referenz` |
+| bereich | Ja | Aus Inhalt ableiten: `v-dok`, `ki`, `sharepoint`, `power-platform`, `n8n`, `gis`, `governance`, `bauamt-allgemein`, `digitalisierung` |
+| abteilung | Ja | Immer `"BAV"` |
+| verantwortlich | Ja | Immer `"Sven Horvath"` |
+| erstellt_am | Ja | Heutiges Datum `YYYY-MM-DD` — niemals leer |
+| geprueft_am | Ja | Heutiges Datum `YYYY-MM-DD` bei neuen Dokumenten |
+| berechtigung | Ja | Standard: `"alle"` |
 
 ### document_type Entscheidung
 

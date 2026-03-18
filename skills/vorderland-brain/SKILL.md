@@ -33,7 +33,40 @@ Wenn der User `→ Brain: [inhalt]` oder `/vaultkeeper:brain [inhalt]` sagt:
    ```
 
 2. **Sidecar-Metadaten** erstellen (`YYYY-MM-DD-[kebab-titel].meta.json`):
-   Fuer das JSON-Schema siehe `references/sidecar-format.md`.
+
+   > **WICHTIG: KEIN FELD DARF LEER BLEIBEN.** Alle Werte aus dem Inhalt ableiten.
+
+   ```json
+   {
+     "title": "[klarer, beschreibender Titel]",
+     "document_type": "[aus Inhalt ableiten — siehe Regeln unten]",
+     "bereich": "[aus Inhalt ableiten — siehe Regeln unten]",
+     "abteilung": "BAV",
+     "verantwortlich": "Sven Horvath",
+     "erstellt_am": "[heutiges Datum: YYYY-MM-DD]",
+     "geprueft_am": "[heutiges Datum: YYYY-MM-DD]",
+     "berechtigung": "alle"
+   }
+   ```
+
+   **`document_type` ableiten:**
+   - `faq` — Frage + Antwort, Problemloesung, "wie mache ich X"
+   - `anleitung` — Schritt-fuer-Schritt Vorgehen, Prozessbeschreibung
+   - `zettel` — Einzelne Erkenntnis, Konzept, Notiz
+   - `protokoll` — Meeting, Besprechung, Entscheidung
+   - `prozess` — Wiederkehrender Ablauf, Workflow
+   - `referenz` — Nachschlagewerk, Glossar, Faktenwissen
+
+   **`bereich` ableiten:**
+   - `v-dok` — V-DOK, Akten, Schriftstuecke, Abfertigen, Reinschrift
+   - `ki` — KI, ChatGPT, Claude, Automatisierung, Prompt
+   - `sharepoint` — SharePoint, Teams, OneDrive, Microsoft 365
+   - `power-platform` — Power Apps, Power Automate, Power BI
+   - `n8n` — n8n, Workflows, Automation, Webhooks
+   - `gis` — VertiGIS, WebOffice, GIS, Karten, Geodaten
+   - `governance` — IT-Governance, Security, DSGVO, Richtlinien
+   - `bauamt-allgemein` — alles andere, allgemeine Bauamt-Prozesse
+   - `digitalisierung` — Digitalisierungsprojekte, Transformation
 
 3. **Hinweis:** "Dashboard (localhost:8501) → Import & Status → Einpflegen"
 
