@@ -1,17 +1,17 @@
-# Sidecar-Metadaten Format
+# Inbox-Format — JSON-Schema
 
-## Schema
+## Ein Dateiformat fuer alles
 
-Jedes Dokument in der Brain-Inbox braucht eine begleitende `.meta.json` Datei.
+Jedes Dokument in der Brain-Inbox ist eine einzelne `.json` Datei.
+Text und Metadaten zusammen — kein Sidecar, kein zweites File.
 
 ### Dateinamen-Konvention
 
-- Inhalt: `YYYY-MM-DD-[kebab-titel].txt`
-- Metadaten: `YYYY-MM-DD-[kebab-titel].meta.json`
+`YYYY-MM-DD-[kebab-titel].json`
 
-Beispiel:
-- `2026-03-18-shadow-ai-governance.txt`
-- `2026-03-18-shadow-ai-governance.meta.json`
+Beispiele:
+- `2026-03-18-shadow-ai-governance.json`
+- `2026-03-18-grundteilungen-kapitel-1.json`
 
 ### JSON-Schema
 
@@ -24,7 +24,8 @@ Beispiel:
   "verantwortlich": "Sven Horvath",
   "erstellt_am": "YYYY-MM-DD",
   "geprueft_am": "YYYY-MM-DD",
-  "berechtigung": "alle|intern|fuehrung"
+  "berechtigung": "alle|intern|fuehrung",
+  "content": "Der vollstaendige Text des Dokuments oder Abschnitts."
 }
 ```
 
@@ -35,13 +36,14 @@ Beispiel:
 | Feld | Pflicht | Wert |
 |------|---------|------|
 | title | Ja | Klarer, beschreibender Titel aus dem Inhalt |
-| document_type | Ja | Aus Inhalt ableiten: `faq`, `anleitung`, `zettel`, `protokoll`, `prozess`, `referenz` |
-| bereich | Ja | Aus Inhalt ableiten: `v-dok`, `ki`, `sharepoint`, `power-platform`, `n8n`, `gis`, `governance`, `bauamt-allgemein`, `digitalisierung` |
+| document_type | Ja | Aus Inhalt ableiten (siehe unten) |
+| bereich | Ja | Aus Inhalt ableiten (siehe unten) |
 | abteilung | Ja | Immer `"BAV"` |
 | verantwortlich | Ja | Immer `"Sven Horvath"` |
 | erstellt_am | Ja | Heutiges Datum `YYYY-MM-DD` — niemals leer |
 | geprueft_am | Ja | Heutiges Datum `YYYY-MM-DD` bei neuen Dokumenten |
 | berechtigung | Ja | Standard: `"alle"` |
+| content | Ja | Vollstaendiger Text, 1:1 aus dem Originaldokument |
 
 ### document_type Entscheidung
 
@@ -52,7 +54,19 @@ Beispiel:
 - `faq` — Haeufig gestellte Frage mit Antwort
 - `referenz` — Nachschlagewerk, Faktenwissen
 
-### Inhaltsdatei Format
+### bereich Entscheidung
+
+- `v-dok` — V-DOK, Akten, Schriftstuecke, Abfertigen
+- `ki` — KI, ChatGPT, Claude, Automatisierung
+- `sharepoint` — SharePoint, Teams, OneDrive, Microsoft 365
+- `power-platform` — Power Apps, Power Automate, Power BI
+- `n8n` — n8n, Workflows, Automation
+- `gis` — VertiGIS, WebOffice, GIS, Geodaten
+- `governance` — IT-Governance, Security, DSGVO
+- `bauamt-allgemein` — alles andere
+- `digitalisierung` — Digitalisierungsprojekte
+
+### content-Feld Format
 
 ```
 [Titel]

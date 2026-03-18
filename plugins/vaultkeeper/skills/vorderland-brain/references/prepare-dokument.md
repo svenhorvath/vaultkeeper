@@ -1,66 +1,90 @@
 # Dokument vorbereiten — Referenz
 
-## Script
+## Ansatz: Claude Multimodal
 
-Das Script `scripts/prepare.py` bereitet externe Dokumente fuer die Brain-Ingestion vor.
+Claude liest Dokumente selbst (PDF, XLSX, DOCX, Bilder) und extrahiert den kompletten Inhalt
+als strukturierten Text. Kein Python-Script, kein Informationsverlust.
 
-## Verwendung
+## Warum kein Script?
 
-```bash
-python scripts/prepare.py <datei-pfad>
+- Python-Libraries (pdfplumber, openpyxl) verlieren Informationen bei Bildern, komplexen Layouts
+- Claude versteht Kontext, Tabellen, Grafiken nativ
+- Claude kann Metadaten (bereich, document_type) intelligent aus dem Inhalt ableiten
+- Kein Dependency-Management noetig
+
+## Output-Format: JSON
+
+Jedes Dokument (oder jeder Abschnitt bei Splits) wird als eine `.json` Datei in die Inbox geschrieben.
+Alles in einer Datei — Text und Metadaten zusammen. Keine separaten Sidecar-Dateien.
+
+### JSON-Schema
+
+```json
+{
+  "title": "Dokumenttitel — Abschnittsname",
+  "document_type": "anleitung",
+  "bereich": "v-dok",
+  "abteilung": "BAV",
+  "verantwortlich": "Sven Horvath",
+  "erstellt_am": "2026-03-18",
+  "geprueft_am": "2026-03-18",
+  "berechtigung": "alle",
+  "content": "Der vollstaendige Text..."
+}
 ```
 
-Auf Windows `python` verwenden (nicht `python3`). Falls `python` nicht im PATH:
-`C:\Users\horvaths\AppData\Local\Programs\Python\Python312\python.exe`
+### Feldregeln
 
-## Was das Script macht
+> **KEIN FELD DARF LEER BLEIBEN. Alle Werte aus dem Inhalt ableiten.**
 
-1. **Dateigroesse pruefen** (Text >50KB, Binaer >100KB = zu gross)
-2. **Binaere Formate konvertieren** (PDF, XLSX, DOCX → Text)
-3. **Text bereinigen** (leere Zeilen, Timestamps, Pipe-Artefakte)
-4. **Grosse Dateien splitten** an Absatzgrenzen in ~40KB Teile
-5. **In Inbox ablegen** (`docker/shared/inbox/`)
-6. **Qualitaetscheck** (Vollstaendigkeit, Inhaltsdichte, Anomalien)
-7. **Bei Fehler:** Dateien entfernen + Bericht mit Verbesserungsvorschlaegen
+| Feld | Pflicht | Wert |
+|------|---------|------|
+| title | Ja | Klarer Titel, bei Splits mit Abschnittsname |
+| document_type | Ja | `faq`, `anleitung`, `zettel`, `protokoll`, `prozess`, `referenz` |
+| bereich | Ja | `v-dok`, `ki`, `sharepoint`, `power-platform`, `n8n`, `gis`, `governance`, `bauamt-allgemein`, `digitalisierung` |
+| abteilung | Ja | Immer `"BAV"` |
+| verantwortlich | Ja | Immer `"Sven Horvath"` |
+| erstellt_am | Ja | Heutiges Datum `YYYY-MM-DD` |
+| geprueft_am | Ja | Heutiges Datum `YYYY-MM-DD` |
+| berechtigung | Ja | Standard: `"alle"` |
+| content | Ja | Vollstaendiger Text, 1:1 Abschrift |
 
-## Konvertierungsregeln
+### Dateinamen
 
-- **XLSX/DOCX** → Immer zu Text (Embeddings API akzeptiert nur Text); XLSX inkl. Kommentare
-- **DOCX** → Tabellen werden in Dokumentreihenfolge mit Absaetzen extrahiert
-- **PDF** → Direkt kopieren wenn klein genug (n8n-Pipeline verarbeitet PDFs selbst)
-- **Scan-PDF** → Exit Code 2: Claude liest multimodal als Fallback
-- **TXT, MD, CSV** → Direkt kopieren wenn klein genug
+`YYYY-MM-DD-[originalname]-[abschnittsname].json`
+- Kebab-Case, keine Umlaute
+- Sprechende Abschnittsnamen
 
-## Qualitaetscheck
+### Kontext-Header im content-Feld
 
-Automatische Pruefungen nach Konvertierung:
-- Alle Blaetter aus XLSX vorhanden?
-- Leerzeilen-Anteil unter 30%?
-- Mindestens 100 Zeichen Inhalt?
-- Keine Encoding-Probleme?
-- Keine Pipe-Artefakte?
+Jeder Abschnitt beginnt im `content` mit:
+```
+[Dokumenttitel]
+Abschnitt: [Abschnittsname]
+================================================================================
+[Inhalt]
+```
 
-Bei FEHLER: Dateien werden aus Inbox entfernt, Exit Code 1.
-Bei WARNUNG: Dateien bleiben, Hinweise werden ausgegeben.
+## Splitting
+
+- Nach logischen Grenzen splitten (Kapitel, Sheets, Themenbloecke)
+- Splitplan dem User vorlegen und bestaetigen lassen
+- Kein Overlap — saubere thematische Trennung
+- Zielgroesse pro content-Feld: unter 40 KB
+
+## Was n8n mit der JSON macht
+
+1. n8n liest die `.json` aus der Inbox
+2. Extrahiert `content` → chunked → embedded → Qdrant
+3. Alle anderen Felder werden als `payload.metadata` in Qdrant gespeichert
+4. Nach Ingestion wird die `.json` nach `eingepflegt/` verschoben
 
 ## Unterstuetzte Formate
 
-| Format | Methode | Library |
-|--------|---------|---------|
-| PDF | Direkt (klein) oder Text via pdfplumber | pdfplumber, PyPDF2 |
-| Scan-PDF | Claude multimodal (Fallback, Exit Code 2) | — |
-| XLSX/XLS | Text via openpyxl inkl. Kommentare | openpyxl |
-| DOCX | Text via python-docx inkl. Tabellen | python-docx |
-| TXT, MD, CSV | Direkt | — |
-
-## Fehlende Libraries
-
-```bash
-pip install pdfplumber openpyxl python-docx
-```
-
-## Nach der Vorbereitung
-
-Ingestion starten:
-- Dashboard: `localhost:8501` → Ingestion
-- Oder Webhook: `curl -X POST http://localhost:5678/webhook/ingestion-start`
+| Format | Methode |
+|--------|---------|
+| PDF | Claude liest multimodal (Text, Tabellen, Grafiken) |
+| XLSX/XLS | Claude liest multimodal (alle Sheets, Kommentare, Formeln) |
+| DOCX | Claude liest multimodal (Absaetze, Tabellen, Kommentare) |
+| TXT, MD, CSV | Claude liest direkt |
+| Bilder (PNG, JPG) | Claude beschreibt den Inhalt |

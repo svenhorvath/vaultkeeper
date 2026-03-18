@@ -16,8 +16,8 @@ Den Zettelkasten nach Inhalten durchsuchen die fuer das Team relevant sind.
    - **Nicht relevant:** Persoenliche Reflexionen, individuelle Notizen, Meinungen
 4. Kandidaten als Liste mit Begruendung anzeigen
 5. Auf Bestaetigung des Users warten (welche sollen gepusht werden?)
-6. Bestaetigte Zettel als `.txt` + `.meta.json` in die Brain-Inbox schreiben
-7. Skill `vorderland-brain` laden fuer Sidecar-Format
+6. Bestaetigte Zettel als `.json` in die Brain-Inbox schreiben (Text + Metadaten in einer Datei)
+7. Skill `vorderland-brain` laden fuer JSON-Format
 
 ## Wichtig
 

@@ -21,54 +21,55 @@ Fallback-Erkennung:
 - Mac: `/Users/svenhorvath/Library/CloudStorage/OneDrive-RegionVorderland-Feldkirch/Claude/Dev/vorderland-brain/docker/shared/inbox`
 - Windows: `C:\Users\horvaths\OneDrive - Region Vorderland-Feldkirch\Claude\Dev\vorderland-brain\docker\shared\inbox`
 
+## Inbox-Format: JSON
+
+Alle Inhalte werden als einzelne `.json` Dateien in die Inbox geschrieben.
+Text und Metadaten in einer Datei — keine separaten Sidecar-Dateien.
+
+Details zum Schema: siehe `references/sidecar-format.md`
+
 ## Kommando: Brain Push
 
 Wenn der User `→ Brain: [inhalt]` oder `/vaultkeeper:brain [inhalt]` sagt:
 
-1. **Inhaltsdatei** erstellen (`YYYY-MM-DD-[kebab-titel].txt`):
-   ```
-   [Titel]
-   ================================================================================
-   [Inhalt — vollstaendig, kein Informationsverlust]
-   ```
+Eine `.json` Datei erstellen (`YYYY-MM-DD-[kebab-titel].json`):
 
-2. **Sidecar-Metadaten** erstellen (`YYYY-MM-DD-[kebab-titel].meta.json`):
+> **WICHTIG: KEIN FELD DARF LEER BLEIBEN.** Alle Werte aus dem Inhalt ableiten.
 
-   > **WICHTIG: KEIN FELD DARF LEER BLEIBEN.** Alle Werte aus dem Inhalt ableiten.
+```json
+{
+  "title": "[klarer, beschreibender Titel]",
+  "document_type": "[aus Inhalt ableiten — siehe Regeln unten]",
+  "bereich": "[aus Inhalt ableiten — siehe Regeln unten]",
+  "abteilung": "BAV",
+  "verantwortlich": "Sven Horvath",
+  "erstellt_am": "[heutiges Datum: YYYY-MM-DD]",
+  "geprueft_am": "[heutiges Datum: YYYY-MM-DD]",
+  "berechtigung": "alle",
+  "content": "[Titel]\n================================================================================\n[Inhalt — vollstaendig, kein Informationsverlust]"
+}
+```
 
-   ```json
-   {
-     "title": "[klarer, beschreibender Titel]",
-     "document_type": "[aus Inhalt ableiten — siehe Regeln unten]",
-     "bereich": "[aus Inhalt ableiten — siehe Regeln unten]",
-     "abteilung": "BAV",
-     "verantwortlich": "Sven Horvath",
-     "erstellt_am": "[heutiges Datum: YYYY-MM-DD]",
-     "geprueft_am": "[heutiges Datum: YYYY-MM-DD]",
-     "berechtigung": "alle"
-   }
-   ```
+**`document_type` ableiten:**
+- `faq` — Frage + Antwort, Problemloesung, "wie mache ich X"
+- `anleitung` — Schritt-fuer-Schritt Vorgehen, Prozessbeschreibung
+- `zettel` — Einzelne Erkenntnis, Konzept, Notiz
+- `protokoll` — Meeting, Besprechung, Entscheidung
+- `prozess` — Wiederkehrender Ablauf, Workflow
+- `referenz` — Nachschlagewerk, Glossar, Faktenwissen
 
-   **`document_type` ableiten:**
-   - `faq` — Frage + Antwort, Problemloesung, "wie mache ich X"
-   - `anleitung` — Schritt-fuer-Schritt Vorgehen, Prozessbeschreibung
-   - `zettel` — Einzelne Erkenntnis, Konzept, Notiz
-   - `protokoll` — Meeting, Besprechung, Entscheidung
-   - `prozess` — Wiederkehrender Ablauf, Workflow
-   - `referenz` — Nachschlagewerk, Glossar, Faktenwissen
+**`bereich` ableiten:**
+- `v-dok` — V-DOK, Akten, Schriftstuecke, Abfertigen, Reinschrift
+- `ki` — KI, ChatGPT, Claude, Automatisierung, Prompt
+- `sharepoint` — SharePoint, Teams, OneDrive, Microsoft 365
+- `power-platform` — Power Apps, Power Automate, Power BI
+- `n8n` — n8n, Workflows, Automation, Webhooks
+- `gis` — VertiGIS, WebOffice, GIS, Karten, Geodaten
+- `governance` — IT-Governance, Security, DSGVO, Richtlinien
+- `bauamt-allgemein` — alles andere, allgemeine Bauamt-Prozesse
+- `digitalisierung` — Digitalisierungsprojekte, Transformation
 
-   **`bereich` ableiten:**
-   - `v-dok` — V-DOK, Akten, Schriftstuecke, Abfertigen, Reinschrift
-   - `ki` — KI, ChatGPT, Claude, Automatisierung, Prompt
-   - `sharepoint` — SharePoint, Teams, OneDrive, Microsoft 365
-   - `power-platform` — Power Apps, Power Automate, Power BI
-   - `n8n` — n8n, Workflows, Automation, Webhooks
-   - `gis` — VertiGIS, WebOffice, GIS, Karten, Geodaten
-   - `governance` — IT-Governance, Security, DSGVO, Richtlinien
-   - `bauamt-allgemein` — alles andere, allgemeine Bauamt-Prozesse
-   - `digitalisierung` — Digitalisierungsprojekte, Transformation
-
-3. **Hinweis:** "Dashboard (localhost:8501) → Import & Status → Einpflegen"
+Danach Hinweis: "Dashboard (localhost:8501) → Import & Status → Einpflegen"
 
 ## Kommando: Brain Scan
 
@@ -79,28 +80,25 @@ Wenn der User `→ Brain scan` oder `/vaultkeeper:brain-scan` sagt:
    - JA: Prozesse, Anleitungen, Fachkompetenz fuer Kollegen
    - NEIN: Persoenliche Reflexionen, individuelle Notizen
 3. Kandidaten mit kurzem Grund auflisten
-4. Auf Bestaeigung warten
-5. Bestaetigte Zettel als `.txt` + `.meta.json` in die Inbox schreiben
+4. Auf Bestaetigung warten
+5. Bestaetigte Zettel als `.json` in die Inbox schreiben (gleiches Schema wie Brain Push)
 
 ## Kommando: Dokument vorbereiten
 
 Wenn der User Dokumente (PDF, XLSX, DOCX) fuer die Ingestion aufbereiten will:
 
-Das Script `${CLAUDE_PLUGIN_ROOT}/scripts/prepare.py` ausfuehren:
-```bash
-python "${CLAUDE_PLUGIN_ROOT}/scripts/prepare.py" <datei-pfad>
-```
+Claude liest das Dokument selbst (multimodal) und extrahiert den kompletten Inhalt.
+Kein Python-Script — Claude versteht Kontext, Tabellen, Grafiken nativ.
 
-Auf Windows `python` verwenden (nicht `python3`).
-
-Details zum Script und dessen Funktionsweise: siehe `references/prepare-dokument.md`.
+Details zum Ablauf: siehe Command `/vaultkeeper:prepare-dokument`.
+Details zum Format: siehe `references/prepare-dokument.md`.
 
 ## Bereiche fuer Metadaten
 
-Gueltige Werte fuer das `bereich`-Feld in Sidecar-Metadaten:
+Gueltige Werte fuer das `bereich`-Feld:
 `ki`, `v-dok`, `sharepoint`, `bauamt-allgemein`, `power-platform`, `n8n`, `gis`, `governance`, `digitalisierung`
 
 ## Weitere Referenzen
 
-- **`references/sidecar-format.md`** — JSON-Schema fuer .meta.json Dateien
-- **`references/prepare-dokument.md`** — Dokumentkonvertierung und Qualitaetscheck
+- **`references/sidecar-format.md`** — JSON-Schema fuer Inbox-Dateien
+- **`references/prepare-dokument.md`** — Dokumentkonvertierung (Claude multimodal)
