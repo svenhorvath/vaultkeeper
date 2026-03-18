@@ -53,8 +53,13 @@ Beim Anlegen eines neuen Zettels:
    source: [woher die Erkenntnis stammt]
    ---
    ```
-3. **Inhalt:** Kernidee (3-5 Saetze), Kontext, Verbindungen
-4. **Backlinks:** Mindestens 2 Backlinks zu existierenden Notizen via `[[pfad/dateiname]]`
+3. **Inhalt:** Kernidee (3-5 Saetze), Kontext
+4. **Links mit Kontext:**
+   - **Inline-Links** im Fliesstext wo ein direkter inhaltlicher Bezug besteht (z.B. "der [[yes-if-framework|'Yes, if'-Ansatz]] bietet dafuer einen Rahmen")
+   - **"Verwandte Zettel (Vorschlag)"**-Abschnitt am Ende mit max 3 Eintraegen, jeder mit 1 Satz Begruendung warum relevant
+   - Kein festes Minimum/Maximum — so viele Links wie inhaltlich sinnvoll (typisch 3-5)
+   - KEIN nackter `[[link]]` ohne Kontext — jeder Link braucht eine Erklaerung durch Platzierung im Satz oder Begruendung
+   - Obsidians automatisches Backlinks-Pane uebernimmt Rueckverweise — keine manuellen "Backlinks"-Abschnitte
 5. **INDEX.md aktualisieren:** Zeile ergaenzen: `| dateiname | Titel | tags |`
 
 ## MCP-Integration
@@ -84,16 +89,6 @@ Zum Suchen im Vault:
 1. MCP-Search nutzen (wenn verfuegbar) fuer semantische Suche
 2. Sonst: Grep ueber `05-Zettelkasten/` und INDEX.md
 3. Ergebnisse mit Kontext zurueckgeben
-
-## Vault-Gesundheitscheck
-
-Bei 50+ Eintraegen in INDEX.md: Sven darauf hinweisen, das Obsidian MCP Plugin einzurichten
-falls noch nicht geschehen (ermoeglicht semantische Suche).
-
-Regelmaessig pruefen:
-- Verwaiste Zettel (ohne ausgehende Links)
-- Fehlende INDEX.md-Eintraege
-- Inkonsistentes Frontmatter
 
 ## Weitere Referenzen
 

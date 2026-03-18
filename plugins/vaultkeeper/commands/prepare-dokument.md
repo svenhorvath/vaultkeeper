@@ -37,6 +37,10 @@ Inhalt des Abschnitts...
 ```
 So weiss jeder Chunk wo er herkommt, auch wenn n8n ihn vom Rest trennt.
 
+## Vault-Kontext
+
+**KEIN Vault-Kontext laden bei diesem Command.** Hier geht es nur um Datenaufbereitung — der Obsidian Vault ist irrelevant. INDEX.md und Zettel NICHT lesen.
+
 ## Ablauf
 
 ### 1. Datei finden
