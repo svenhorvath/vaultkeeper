@@ -10,8 +10,35 @@ description: >
 
 # Vorderland Brain — Wissen ins Team pushen
 
-Erstelle und verwalte Inhalte fuer die Vorderland Brain Ingestion-Pipeline.
-Das Brain ist eine Qdrant-basierte Wissensdatenbank fuer das Bauamt Vorderland.
+## Was das Brain ist
+
+Das Vorderland Brain ist ein **interner technischer Support-Assistent** — ein spezialisiertes RAG-System (Qdrant) das operatives Fach- und Systemwissen des Bauamts Vorderland buendelt und per Chat abfragbar macht. Kein allgemeiner Chatbot, sondern ein Support-Desk fuer die Systeme und Prozesse die taeglich genutzt werden.
+
+**Zielgruppe:**
+1. Sven selbst — Wissenssicherung: "Wie hab ich das vor 3 Jahren gemacht?"
+2. Kollegen (30+) — Self-Service statt Sven fragen: "Wie mach ich X in V-DOK?"
+3. Kevin / zukuenftige Entwickler — technische Dokumentation der gebauten Loesungen
+
+## Was ins Brain gehoert
+
+| Kategorie | Beispiele |
+|---|---|
+| **Anleitungen** | Wie erstelle ich ein Ausgangsstueck in V-DOK? Wie konfiguriere ich einen Layer in WebOffice? |
+| **Troubleshooting** | Ausgangsstueck laesst sich nicht abfertigen → Adressat fehlt |
+| **Konfigurationswissen** | Einstellungen in VertiGIS FM, SharePoint Mailbox-Config |
+| **Prozesse** | Wann muessen DKM-Stichtagsdaten aktualisiert werden? Wo kommen Daten vom Land? |
+| **Selbst gebaute Loesungen** | Wie funktioniert die Power Apps Stundenerfassung? Power Automate Flow-Aufbau |
+| **Datenquellen** | Wo finde ich Daten fuer diesen WebOffice-Layer? Welche Access-DB gehoert wozu? |
+| **Workarounds & Fallen** | Komma/Punkt in Power Apps, OneDrive Non-Breaking Spaces |
+
+## Was NICHT ins Brain gehoert
+
+- Persoenliche Reflexionen, Fuehrungsphilosophie, Haltung
+- KI/RAG-Architektur-Wissen (Meta-Wissen ueber das Brain selbst)
+- Strategie, Governance-Ueberlegungen
+- Allgemeinwissen (kann jeder LLM beantworten)
+
+**Faustregel fuer Brain-Scan:** Wuerde ein Kollege das fragen? Oder wuerde Sven das in 3 Jahren nachschlagen? → Brain. Ist es Reflexion, Strategie, Meta-Wissen? → Nur Vault.
 
 ## Inbox-Pfade
 
@@ -76,9 +103,10 @@ Danach Hinweis: "Dashboard (localhost:8501) → Import & Status → Einpflegen"
 Wenn der User `→ Brain scan` oder `/vaultkeeper:brain-scan` sagt:
 
 1. Alle Zettel in `SvenVault/05-Zettelkasten/` lesen
-2. Bewerten welche **team-relevant** sind:
-   - JA: Prozesse, Anleitungen, Fachkompetenz fuer Kollegen
-   - NEIN: Persoenliche Reflexionen, individuelle Notizen
+2. Jeden Zettel gegen die Brain-Kriterien pruefen:
+   - **JA:** Anleitungen, Troubleshooting, Konfigurationen, Prozesse, Workarounds, Datenquellen, selbst gebaute Loesungen — alles was ein Kollege fragen wuerde oder Sven in 3 Jahren nachschlagen muesste
+   - **NEIN:** Persoenliche Reflexionen, Strategie, Fuehrung, KI/RAG-Architektur-Meta-Wissen, Haltung
+   - **Brain-relevante Domaenen:** V-DOK, WebOffice, VertiGIS FM, Power Platform, SharePoint, n8n, DKM, Bauamt-Prozesse
 3. Kandidaten mit kurzem Grund auflisten
 4. Auf Bestaetigung warten
 5. Bestaetigte Zettel als `.json` in die Inbox schreiben (gleiches Schema wie Brain Push)

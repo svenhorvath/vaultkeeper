@@ -83,6 +83,17 @@ Keinen Zettel anlegen bei:
 - Dingen die bereits als Code-Kommentar dokumentiert sind
 - Informationen die nur in der aktuellen Session relevant sind
 
+## Vault vs. Brain — wann was wohin
+
+Der Vault ist "Sven 2.0" — ALLES gehoert hier rein. Das Vorderland Brain ist eine **Teilmenge** des Vaults: nur operatives Fach- und Systemwissen fuer den technischen Support.
+
+Nach dem Anlegen eines Zettels immer pruefen:
+- **Wuerde ein Kollege das fragen?** → Auch brain-relevant, Hinweis geben: "Dieser Zettel waere auch fuer das Brain relevant (`/vaultkeeper:brain`)"
+- **Wuerde Sven das in 3 Jahren nachschlagen?** → Auch brain-relevant
+- **Ist es Reflexion, Strategie, Meta-Wissen, persoenliche Haltung?** → Nur Vault, nicht Brain
+
+Brain-relevante Wissensdomaenen: V-DOK, WebOffice, VertiGIS FM, Power Platform, SharePoint, n8n, DKM, Bauamt-Prozesse, Workarounds/Troubleshooting.
+
 ## Vault durchsuchen
 
 Zum Suchen im Vault:
