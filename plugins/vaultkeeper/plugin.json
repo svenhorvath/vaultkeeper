@@ -1,6 +1,6 @@
 {
   "name": "vaultkeeper",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Persoenliches Wissensmanagement: Obsidian Vault als Second Brain + Vorderland Brain als Team-Wissenspipeline. Sammelt Erkenntnisse automatisch, vernetzt Wissen und pusht relevante Inhalte ins Team.",
   "author": {
     "name": "Sven Horvath",
