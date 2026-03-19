@@ -1,25 +1,25 @@
 ---
-name: vorderland-brain
+name: vorderland-vault
 description: >
-  Pusht Wissen aus dem persoenlichen Vault ins Vorderland Brain (Team-Wissensdatenbank auf Qdrant).
-  Dieser Skill sollte verwendet werden wenn der User "Brain:", "ins Brain pushen",
-  "Brain scan", "fuer das Team aufbereiten", "in die Inbox legen", "Dokument fuer Qdrant",
+  Pusht Wissen aus dem persoenlichen Brain ins Vorderland Vault (Team-Wissensdatenbank auf Qdrant).
+  Dieser Skill sollte verwendet werden wenn der User "Vault:", "ins Vault pushen",
+  "Vault scan", "fuer das Team aufbereiten", "in die Inbox legen", "Dokument fuer Qdrant",
   "Dokument vorbereiten", "Datei fuer Ingestion", "Dokument splitten" sagt.
   Auch bei: "das sollte das Team wissen", "das ist relevant fuer die Kollegen".
 ---
 
-# Vorderland Brain — Wissen ins Team pushen
+# Vorderland Vault — Wissen ins Team pushen
 
-## Was das Brain ist
+## Was das Vault ist
 
-Das Vorderland Brain ist ein **interner technischer Support-Assistent** — ein spezialisiertes RAG-System (Qdrant) das operatives Fach- und Systemwissen des Bauamts Vorderland buendelt und per Chat abfragbar macht. Kein allgemeiner Chatbot, sondern ein Support-Desk fuer die Systeme und Prozesse die taeglich genutzt werden.
+Das Vorderland Vault ist ein **interner technischer Support-Assistent** — ein spezialisiertes RAG-System (Qdrant) das operatives Fach- und Systemwissen des Bauamts Vorderland buendelt und per Chat abfragbar macht. Kein allgemeiner Chatbot, sondern ein Support-Desk fuer die Systeme und Prozesse die taeglich genutzt werden.
 
 **Zielgruppe:**
 1. Sven selbst — Wissenssicherung: "Wie hab ich das vor 3 Jahren gemacht?"
 2. Kollegen (30+) — Self-Service statt Sven fragen: "Wie mach ich X in V-DOK?"
 3. Kevin / zukuenftige Entwickler — technische Dokumentation der gebauten Loesungen
 
-## Was ins Brain gehoert
+## Was ins Vault gehoert
 
 | Kategorie | Beispiele |
 |---|---|
@@ -31,22 +31,22 @@ Das Vorderland Brain ist ein **interner technischer Support-Assistent** — ein 
 | **Datenquellen** | Wo finde ich Daten fuer diesen WebOffice-Layer? Welche Access-DB gehoert wozu? |
 | **Workarounds & Fallen** | Komma/Punkt in Power Apps, OneDrive Non-Breaking Spaces |
 
-## Was NICHT ins Brain gehoert
+## Was NICHT ins Vault gehoert
 
 - Persoenliche Reflexionen, Fuehrungsphilosophie, Haltung
-- KI/RAG-Architektur-Wissen (Meta-Wissen ueber das Brain selbst)
+- KI/RAG-Architektur-Wissen (Meta-Wissen ueber das Vault selbst)
 - Strategie, Governance-Ueberlegungen
 - Allgemeinwissen (kann jeder LLM beantworten)
 
-**Faustregel fuer Brain-Scan:** Wuerde ein Kollege das fragen? Oder wuerde Sven das in 3 Jahren nachschlagen? → Brain. Ist es Reflexion, Strategie, Meta-Wissen? → Nur Vault.
+**Faustregel fuer Vault-Scan:** Wuerde ein Kollege das fragen? Oder wuerde Sven das in 3 Jahren nachschlagen? → Vault. Ist es Reflexion, Strategie, Meta-Wissen? → Nur Brain.
 
 ## Inbox-Pfade
 
-Pfade aus `~/.claude/vaultkeeper.local.md` lesen (YAML-Frontmatter Feld `brain_inbox`).
+Pfade aus `~/.claude/vaultkeeper.local.md` lesen (YAML-Frontmatter Feld `vault_inbox`).
 
 Fallback-Erkennung:
-- Mac: `/Users/svenhorvath/Library/CloudStorage/OneDrive-RegionVorderland-Feldkirch/Claude/Dev/vorderland-brain/docker/shared/inbox`
-- Windows: `C:\Users\horvaths\OneDrive - Region Vorderland-Feldkirch\Claude\Dev\vorderland-brain\docker\shared\inbox`
+- Mac: `/Users/svenhorvath/Library/CloudStorage/OneDrive-RegionVorderland-Feldkirch/Claude/Dev/vorderland-vault/docker/shared/inbox`
+- Windows: `C:\Users\horvaths\OneDrive - Region Vorderland-Feldkirch\Claude\Dev\vorderland-vault\docker\shared\inbox`
 
 ## Inbox-Format: JSON
 
@@ -55,9 +55,9 @@ Text und Metadaten in einer Datei — keine separaten Sidecar-Dateien.
 
 Details zum Schema: siehe `references/sidecar-format.md`
 
-## Kommando: Brain Push
+## Kommando: Vault Push
 
-Wenn der User `→ Brain: [inhalt]` oder `/vaultkeeper:brain [inhalt]` sagt:
+Wenn der User `→ Vault: [inhalt]` oder `/vaultkeeper:vault [inhalt]` sagt:
 
 Eine `.json` Datei erstellen (`YYYY-MM-DD-[kebab-titel].json`):
 
@@ -98,18 +98,18 @@ Eine `.json` Datei erstellen (`YYYY-MM-DD-[kebab-titel].json`):
 
 Danach Hinweis: "Dashboard (localhost:8501) → Import & Status → Einpflegen"
 
-## Kommando: Brain Scan
+## Kommando: Vault Scan
 
-Wenn der User `→ Brain scan` oder `/vaultkeeper:brain-scan` sagt:
+Wenn der User `→ Vault scan` oder `/vaultkeeper:vault-scan` sagt:
 
-1. Alle Zettel in `SvenVault/05-Zettelkasten/` lesen
-2. Jeden Zettel gegen die Brain-Kriterien pruefen:
+1. Alle Zettel in `SvenBrain/05-Zettelkasten/` lesen
+2. Jeden Zettel gegen die Vault-Kriterien pruefen:
    - **JA:** Anleitungen, Troubleshooting, Konfigurationen, Prozesse, Workarounds, Datenquellen, selbst gebaute Loesungen — alles was ein Kollege fragen wuerde oder Sven in 3 Jahren nachschlagen muesste
    - **NEIN:** Persoenliche Reflexionen, Strategie, Fuehrung, KI/RAG-Architektur-Meta-Wissen, Haltung
-   - **Brain-relevante Domaenen:** V-DOK, WebOffice, VertiGIS FM, Power Platform, SharePoint, n8n, DKM, Bauamt-Prozesse
+   - **Vault-relevante Domaenen:** V-DOK, WebOffice, VertiGIS FM, Power Platform, SharePoint, n8n, DKM, Bauamt-Prozesse
 3. Kandidaten mit kurzem Grund auflisten
 4. Auf Bestaetigung warten
-5. Bestaetigte Zettel als `.json` in die Inbox schreiben (gleiches Schema wie Brain Push)
+5. Bestaetigte Zettel als `.json` in die Inbox schreiben (gleiches Schema wie Vault Push)
 
 ## Kommando: Dokument vorbereiten
 

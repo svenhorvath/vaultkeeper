@@ -1,30 +1,30 @@
 ---
-name: obsidian-vault
+name: obsidian-brain
 description: >
-  Verwaltet den persoenlichen Obsidian Vault (SvenVault) als Second Brain.
+  Verwaltet das persoenliche Obsidian Brain (SvenBrain) als Second Brain.
   Dieser Skill sollte verwendet werden wenn der User "Zettel anlegen", "Notiz erstellen",
-  "in den Vault schreiben", "Vault durchsuchen", "Zettelkasten", "INDEX aktualisieren",
-  "Vault Status" sagt, oder wenn Claude automatisch eine wichtige Erkenntnis als Zettel
+  "ins Brain schreiben", "Brain durchsuchen", "Zettelkasten", "INDEX aktualisieren",
+  "Brain Status" sagt, oder wenn Claude automatisch eine wichtige Erkenntnis als Zettel
   ablegen will. Auch bei: "was weiss ich ueber [thema]", "habe ich dazu schon was",
-  "Vault Gesundheitscheck".
+  "Brain Gesundheitscheck".
 ---
 
-# Obsidian Vault — Second Brain
+# Obsidian Brain — Second Brain
 
-Verwalte den persoenlichen Obsidian Vault nach dem PARA + Zettelkasten Hybrid-Prinzip.
+Verwalte das persoenliche Obsidian Brain nach dem PARA + Zettelkasten Hybrid-Prinzip.
 
-## Vault-Pfade
+## Brain-Pfade
 
-Pfade aus `~/.claude/vaultkeeper.local.md` lesen (YAML-Frontmatter Feld `vault_path`).
+Pfade aus `~/.claude/vaultkeeper.local.md` lesen (YAML-Frontmatter Feld `brain_path`).
 
 Fallback-Erkennung:
-- Mac: `/Users/svenhorvath/Library/CloudStorage/OneDrive-RegionVorderland-Feldkirch/SvenVault`
-- Windows: `C:\Users\horvaths\OneDrive - Region Vorderland-Feldkirch\SvenVault`
+- Mac: `/Users/svenhorvath/Library/CloudStorage/OneDrive-RegionVorderland-Feldkirch/SvenBrain`
+- Windows: `C:\Users\horvaths\OneDrive - Region Vorderland-Feldkirch\SvenBrain`
 
-## Vault-Struktur
+## Brain-Struktur
 
 ```
-SvenVault/
+SvenBrain/
 ├── 00-Inbox/          # Ungefilterte Captures
 ├── 01-Projects/       # Aktive Projekte mit Endpunkt
 ├── 02-Areas/          # Laufende Verantwortungsbereiche
@@ -83,20 +83,20 @@ Keinen Zettel anlegen bei:
 - Dingen die bereits als Code-Kommentar dokumentiert sind
 - Informationen die nur in der aktuellen Session relevant sind
 
-## Vault vs. Brain — wann was wohin
+## Brain vs. Vault — wann was wohin
 
-Der Vault ist "Sven 2.0" — ALLES gehoert hier rein. Das Vorderland Brain ist eine **Teilmenge** des Vaults: nur operatives Fach- und Systemwissen fuer den technischen Support.
+Das Brain ist "Sven 2.0" — ALLES gehoert hier rein. Das Vorderland Vault ist eine **Teilmenge** des Brains: nur operatives Fach- und Systemwissen fuer den technischen Support.
 
 Nach dem Anlegen eines Zettels immer pruefen:
-- **Wuerde ein Kollege das fragen?** → Auch brain-relevant, Hinweis geben: "Dieser Zettel waere auch fuer das Brain relevant (`/vaultkeeper:brain`)"
-- **Wuerde Sven das in 3 Jahren nachschlagen?** → Auch brain-relevant
-- **Ist es Reflexion, Strategie, Meta-Wissen, persoenliche Haltung?** → Nur Vault, nicht Brain
+- **Wuerde ein Kollege das fragen?** → Auch vault-relevant, Hinweis geben: "Dieser Zettel waere auch fuer das Vault relevant (`/vaultkeeper:vault`)"
+- **Wuerde Sven das in 3 Jahren nachschlagen?** → Auch vault-relevant
+- **Ist es Reflexion, Strategie, Meta-Wissen, persoenliche Haltung?** → Nur Brain, nicht Vault
 
-Brain-relevante Wissensdomaenen: V-DOK, WebOffice, VertiGIS FM, Power Platform, SharePoint, n8n, DKM, Bauamt-Prozesse, Workarounds/Troubleshooting.
+Vault-relevante Wissensdomaenen: V-DOK, WebOffice, VertiGIS FM, Power Platform, SharePoint, n8n, DKM, Bauamt-Prozesse, Workarounds/Troubleshooting.
 
-## Vault durchsuchen
+## Brain durchsuchen
 
-Zum Suchen im Vault:
+Zum Suchen im Brain:
 1. MCP-Search nutzen (wenn verfuegbar) fuer semantische Suche
 2. Sonst: Grep ueber `05-Zettelkasten/` und INDEX.md
 3. Ergebnisse mit Kontext zurueckgeben
@@ -104,4 +104,4 @@ Zum Suchen im Vault:
 ## Weitere Referenzen
 
 - **`references/vault-conventions.md`** — Detaillierte Linking-Regeln, Tag-Hierarchie, Frontmatter-Varianten
-- **`references/mcp-usage.md`** — MCP-Tools und deren Einsatz im Vault
+- **`references/mcp-usage.md`** — MCP-Tools und deren Einsatz im Brain

@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "vaultkeeper",
-      "description": "Obsidian Vault lesen, Wissen ins Vorderland Brain pushen, Dokumente aufbereiten",
+      "description": "SvenBrain (Obsidian) lesen, Wissen ins Vorderland Vault pushen, Dokumente aufbereiten",
       "version": "0.1.0",
       "author": {
         "name": "Sven Horvath",

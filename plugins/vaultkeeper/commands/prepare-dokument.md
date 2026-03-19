@@ -1,12 +1,12 @@
 ---
 allowed-tools: Read, Write, Bash, Glob, Grep
-description: "Dokumente (PDF, XLSX, DOCX) fuer die Vorderland Brain Ingestion aufbereiten"
+description: "Dokumente (PDF, XLSX, DOCX) fuer die Vorderland Vault Ingestion aufbereiten"
 argument-hint: "<datei-pfad>"
 ---
 
 # /vaultkeeper:prepare-dokument
 
-Externe Dokumente fuer die Brain-Ingestion-Pipeline aufbereiten.
+Externe Dokumente fuer die Vault-Ingestion-Pipeline aufbereiten.
 Claude liest das Dokument selbst (multimodal) und extrahiert den KOMPLETTEN Inhalt.
 Ergebnis: Eine oder mehrere `.json` Dateien in der Inbox.
 
@@ -37,9 +37,9 @@ Inhalt des Abschnitts...
 ```
 So weiss jeder Chunk wo er herkommt, auch wenn n8n ihn vom Rest trennt.
 
-## Vault-Kontext
+## Brain-Kontext
 
-**KEIN Vault-Kontext laden bei diesem Command.** Hier geht es nur um Datenaufbereitung — der Obsidian Vault ist irrelevant. INDEX.md und Zettel NICHT lesen.
+**KEIN Brain-Kontext laden bei diesem Command.** Hier geht es nur um Datenaufbereitung — das Obsidian Brain ist irrelevant. INDEX.md und Zettel NICHT lesen.
 
 ## Ablauf
 
@@ -50,10 +50,10 @@ Pruefen ob die Datei existiert.
 
 ### 2. Inbox-Pfad ermitteln
 
-Settings aus `~/.claude/vaultkeeper.local.md` lesen (Feld `brain_inbox`).
+Settings aus `~/.claude/vaultkeeper.local.md` lesen (Feld `vault_inbox`).
 Fallback:
-- Mac: `/Users/svenhorvath/Library/CloudStorage/OneDrive-RegionVorderland-Feldkirch/Claude/Dev/vorderland-brain/docker/shared/inbox`
-- Windows: `C:\Users\horvaths\OneDrive - Region Vorderland-Feldkirch\Claude\Dev\vorderland-brain\docker\shared\inbox`
+- Mac: `/Users/svenhorvath/Library/CloudStorage/OneDrive-RegionVorderland-Feldkirch/Claude/Dev/vorderland-vault/docker/shared/inbox`
+- Windows: `C:\Users\horvaths\OneDrive - Region Vorderland-Feldkirch\Claude\Dev\vorderland-vault\docker\shared\inbox`
 
 ### 3. Dokument lesen
 

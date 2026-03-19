@@ -3,8 +3,8 @@
 Persoenliches Wissensmanagement-Plugin fuer Claude Code.
 
 **Zwei Richtungen, ein System:**
-- **Obsidian Vault** — Wissen sammeln (Second Brain)
-- **Vorderland Brain** — Wissen teilen (Team-Wissensdatenbank auf Qdrant)
+- **SvenBrain (Obsidian)** — Wissen sammeln (Second Brain)
+- **Vorderland Vault** — Wissen teilen (Team-Wissensdatenbank auf Qdrant)
 
 ## Installation
 
@@ -23,8 +23,8 @@ Beim ersten Start erkennt Vaultkeeper automatisch das Betriebssystem und legt
 
 ```markdown
 ---
-vault_path: "C:\\Users\\horvaths\\OneDrive - Region Vorderland-Feldkirch\\SvenVault"
-brain_inbox: "C:\\Users\\horvaths\\OneDrive - Region Vorderland-Feldkirch\\Claude\\Dev\\vorderland-brain\\docker\\shared\\inbox"
+brain_path: "C:\\Users\\horvaths\\OneDrive - Region Vorderland-Feldkirch\\SvenBrain"
+vault_inbox: "C:\\Users\\horvaths\\OneDrive - Region Vorderland-Feldkirch\\Claude\\Dev\\vorderland-vault\\docker\\shared\\inbox"
 ---
 ```
 
@@ -32,9 +32,9 @@ brain_inbox: "C:\\Users\\horvaths\\OneDrive - Region Vorderland-Feldkirch\\Claud
 
 | Command | Beschreibung |
 |---------|-------------|
-| `/vaultkeeper:brain [inhalt]` | Wissen ins Vorderland Brain pushen |
-| `/vaultkeeper:brain-scan` | Vault nach team-relevanten Inhalten durchsuchen |
-| `/vaultkeeper:prepare-dokument [datei]` | Dokumente (PDF, XLSX, DOCX) fuer Brain aufbereiten |
+| `/vaultkeeper:vault [inhalt]` | Wissen ins Vorderland Vault pushen |
+| `/vaultkeeper:vault-scan` | Brain nach team-relevanten Inhalten durchsuchen |
+| `/vaultkeeper:prepare-dokument [datei]` | Dokumente (PDF, XLSX, DOCX) fuer Vault aufbereiten |
 
 ## Wie es funktioniert
 
@@ -55,20 +55,20 @@ Jede JSON-Datei enthaelt Text und Metadaten zusammen:
 
 n8n holt die JSON aus der Inbox, chunked den Text, embedded und speichert in Qdrant.
 
-### Brain Push
+### Vault Push
 
-Wissen direkt aus dem Chat ins Brain pushen — Claude erstellt die JSON automatisch.
+Wissen direkt aus dem Chat ins Vault pushen — Claude erstellt die JSON automatisch.
 
-### Brain Scan
+### Vault Scan
 
-Vault nach team-relevanten Zetteln durchsuchen, User bestaeigt, dann als JSON in die Inbox.
+Brain nach team-relevanten Zetteln durchsuchen, User bestaetigt, dann als JSON in die Inbox.
 
 ## Skills
 
 | Skill | Trigger |
 |-------|---------|
-| `obsidian-vault` | "Zettel anlegen", "Vault durchsuchen", automatisch bei Erkenntnissen |
-| `vorderland-brain` | "Brain:", "ins Brain pushen", "Dokument vorbereiten" |
+| `obsidian-brain` | "Zettel anlegen", "Brain durchsuchen", automatisch bei Erkenntnissen |
+| `vorderland-vault` | "Vault:", "ins Vault pushen", "Dokument vorbereiten" |
 
 ## Hook
 
@@ -76,7 +76,7 @@ Vault nach team-relevanten Zetteln durchsuchen, User bestaeigt, dann als JSON in
 
 ## MCP-Integration (optional)
 
-Fuer erweiterten Vault-Zugriff (semantische Suche, Tags, Frontmatter):
+Fuer erweiterten Brain-Zugriff (semantische Suche, Tags, Frontmatter):
 
 1. In Obsidian: Community Plugin "Local REST API" installieren
 2. In Claude Code:
