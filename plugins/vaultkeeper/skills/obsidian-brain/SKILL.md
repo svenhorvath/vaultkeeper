@@ -1,12 +1,11 @@
 ---
 name: obsidian-brain
 description: >
-  Verwaltet das persoenliche Obsidian Brain (SvenBrain) als Second Brain.
-  Dieser Skill sollte verwendet werden wenn der User "Zettel anlegen", "Notiz erstellen",
-  "ins Brain schreiben", "Brain durchsuchen", "Zettelkasten", "INDEX aktualisieren",
-  "Brain Status" sagt, oder wenn Claude automatisch eine wichtige Erkenntnis als Zettel
-  ablegen will. Auch bei: "was weiss ich ueber [thema]", "habe ich dazu schon was",
-  "Brain Gesundheitscheck".
+  Verwaltet das SvenBrain (Obsidian) als Second Brain.
+  Trigger: "Zettel anlegen", "ins Brain schreiben", "Brain durchsuchen",
+  "INDEX aktualisieren", "ADR anlegen", "Pattern dokumentieren",
+  "Lesson Learned", "was weiss ich ueber [thema]", "Brain Status",
+  "brain-init", "brain-sync".
 ---
 
 # Obsidian Brain — Second Brain
@@ -70,13 +69,26 @@ Pruefen ob Obsidian MCP-Tools verfuegbar sind (`mcp__obsidian__` Tools vorhanden
 
 Fuer Details zur MCP-Nutzung: `references/mcp-usage.md` lesen.
 
+## Zettel-Typen und Tags
+
+| Typ | Tag | Wann |
+|---|---|---|
+| **ADR** | `#adr` | Architektur-Entscheidung getroffen (warum X statt Y) |
+| **Pattern** | `#pattern` | Wiederverwendbares Muster identifiziert (2+ Projekte) |
+| **Lesson Learned** | `#lessons-learned` | Aus Fehler/Ueberraschung gelernt |
+| **Workaround** | `#workaround` | Offizieller Weg geht nicht, Alternative dokumentiert |
+| **Allgemein** | (thematisch) | Nicht-offensichtliche Erkenntnis |
+
+Fuer ADR-Format: `references/adr-template.md` lesen.
+Fuer Pattern-Format: `references/pattern-conventions.md` lesen.
+
 ## Wann automatisch Zettel anlegen
 
-Ohne ausdrueckliche Aufforderung durch den User einen Zettel anlegen wenn:
-- Eine **Architektur-Entscheidung** getroffen wird (warum so und nicht anders)
-- Ein **bewaehrtes Pattern** identifiziert wird (wiederverwendbar)
-- Eine **nicht-offensichtliche Erkenntnis** entsteht (wuerde beim naechsten Mal helfen)
-- Ein **Prozess-Insight** fuer die Verwaltung relevant ist
+Ohne ausdrueckliche Aufforderung einen Zettel anlegen wenn:
+- Eine **Architektur-Entscheidung** getroffen wird → ADR-Zettel
+- Ein **bewaehrtes Pattern** identifiziert wird → Pattern-Zettel
+- Eine **nicht-offensichtliche Erkenntnis** entsteht → Zettel mit thematischen Tags
+- Ein **Workaround** noetig ist → Workaround-Zettel + Vault-Hinweis
 
 Keinen Zettel anlegen bei:
 - Temporaerem, offensichtlichem oder trivialem Wissen
@@ -105,3 +117,5 @@ Zum Suchen im Brain:
 
 - **`references/vault-conventions.md`** — Detaillierte Linking-Regeln, Tag-Hierarchie, Frontmatter-Varianten
 - **`references/mcp-usage.md`** — MCP-Tools und deren Einsatz im Brain
+- **`references/adr-template.md`** — MADR-Format fuer Architektur-Entscheidungen
+- **`references/pattern-conventions.md`** — Wie Patterns als Zettel dokumentiert werden

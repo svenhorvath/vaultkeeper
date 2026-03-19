@@ -6,8 +6,9 @@
 - "Local REST API" Community Plugin in Obsidian installiert und aktiviert
 - MCP-Server in Claude Code registriert:
   ```bash
-  claude mcp add --scope user obsidian -e OBSIDIAN_API_KEY=KEY -e OBSIDIAN_HOST=127.0.0.1 -e OBSIDIAN_PORT=27124 -- npx obsidian-mcp-server
+  claude mcp add --scope user obsidian -e OBSIDIAN_API_KEY=KEY -e OBSIDIAN_BASE_URL=https://127.0.0.1:27124 -e OBSIDIAN_VERIFY_SSL=false -- npx -y obsidian-mcp-server
   ```
+  **Wichtig:** `OBSIDIAN_HOST`/`OBSIDIAN_PORT` werden vom Package ignoriert. Nur `OBSIDIAN_BASE_URL` funktioniert.
 
 ## Verfuegbarkeit pruefen
 
@@ -18,14 +19,14 @@ Falls nicht verfuegbar: auf File-basierten Zugriff zurueckfallen (Read/Write/Gre
 
 | Tool | Zweck |
 |------|-------|
-| `mcp__obsidian__read` | Notiz lesen (Inhalt + Frontmatter) |
-| `mcp__obsidian__update` | Notiz aktualisieren |
-| `mcp__obsidian__search_replace` | Suchen und Ersetzen in Notizen |
-| `mcp__obsidian__global_search` | Vault-weite Suche |
-| `mcp__obsidian__list` | Dateien/Ordner auflisten |
-| `mcp__obsidian__get_tags` | Alle Tags im Vault abrufen |
-| `mcp__obsidian__get_frontmatter` | Frontmatter einer Notiz lesen |
-| `mcp__obsidian__delete` | Notiz loeschen (VORSICHT — besser in Archive verschieben) |
+| `mcp__obsidian__obsidian_read_note` | Notiz lesen (Inhalt + Frontmatter) |
+| `mcp__obsidian__obsidian_update_note` | Notiz erstellen/aktualisieren (targetType, modificationType, wholeFileMode noetig) |
+| `mcp__obsidian__obsidian_search_replace` | Suchen und Ersetzen in Notizen |
+| `mcp__obsidian__obsidian_global_search` | Vault-weite Suche |
+| `mcp__obsidian__obsidian_list_notes` | Dateien/Ordner auflisten |
+| `mcp__obsidian__obsidian_manage_tags` | Tags verwalten |
+| `mcp__obsidian__obsidian_manage_frontmatter` | Frontmatter lesen/aendern |
+| `mcp__obsidian__obsidian_delete_note` | Notiz loeschen (VORSICHT — besser in 04-Archive verschieben) |
 
 ## Wann MCP bevorzugen
 
