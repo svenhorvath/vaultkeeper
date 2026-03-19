@@ -1,0 +1,20 @@
+{
+  "name": "vaultkeeper",
+  "owner": {
+    "name": "Sven Horvath",
+    "email": "sven.horvath@vorderland.at"
+  },
+  "plugins": [
+    {
+      "name": "vaultkeeper",
+      "description": "Obsidian Vault lesen, Wissen ins Vorderland Brain pushen, Dokumente aufbereiten",
+      "version": "0.1.0",
+      "author": {
+        "name": "Sven Horvath",
+        "url": "https://github.com/svenhorvath"
+      },
+      "source": "./plugins/vaultkeeper",
+      "category": "productivity"
+    }
+  ]
+}

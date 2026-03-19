@@ -58,11 +58,44 @@ created: YYYY-MM-DD
 
 ## Linking-Regeln
 
-- Jede neue Notiz MUSS mindestens 1 Backlink zu einer existierenden Notiz haben
-- Personen immer als `[[06-People/vorname-nachname]]` verlinken
-- Projekte immer als `[[01-Projects/projektname/projektname]]` verlinken
-- Zettel untereinander verlinken mit `[[05-Zettelkasten/dateiname]]`
-- Wiki-Syntax verwenden `[[...]]`, keine relativen Pfade
+### Grundprinzip: Links brauchen Kontext
+
+Jeder Link muss erklaeren WARUM er gesetzt wird — entweder durch seine Position im Satz (Inline) oder durch eine kurze Begruendung (Footer). Ein nackter `[[link]]` ohne Kontext ist wertlos.
+
+### Inline-Links (primaere Methode)
+
+Links gehoeren in den Fliesstext, dort wo der inhaltliche Bezug besteht:
+```markdown
+Die Loesung ist nicht Verbote, sondern kontrolliertes Ermoeglichen —
+der [[yes-if-framework|"Yes, if"-Ansatz]] bietet dafuer einen konkreten Rahmen.
+```
+
+### Verwandte Zettel (sekundaere Methode)
+
+Am Ende der Notiz unter `## Verwandte Zettel (Vorschlag)` fuer allgemeine thematische Verbindungen — jeder Eintrag mit 1 Satz Begruendung:
+```markdown
+## Verwandte Zettel (Vorschlag)
+- [[poc-auf-privatgeraet-strategie]] — ein Weg, Shadow AI in geordnete Bahnen zu lenken
+- [[konstruktiver-rebell-haltung]] — die Haltung die dahintersteckt
+```
+
+Das Label "(Vorschlag)" zeigt an, dass die Links von Claude generiert und noch nicht von Sven reviewt wurden. Nach Review wird "(Vorschlag)" entfernt.
+
+### Keine manuellen Backlinks
+
+Obsidians automatisches Backlinks-Pane zeigt Rueckverweise. Kein manueller "Backlinks"-Abschnitt am Ende der Notiz.
+
+### Verlinkungssyntax
+
+- Personen: `[[06-People/vorname-nachname]]`
+- Projekte: `[[01-Projects/projektname/projektname]]`
+- Zettel untereinander: `[[dateiname]]` (Obsidian loest den Pfad automatisch auf)
+- Wiki-Syntax verwenden `[[...]]`
+- Display-Text mit Pipe: `[[dateiname|Anzeigename]]`
+
+### Anzahl Links
+
+Kein festes Minimum oder Maximum. Typisch 3-5 Links pro Zettel. Qualitaet schlaegt Quantitaet.
 
 ## Tag-Hierarchie
 

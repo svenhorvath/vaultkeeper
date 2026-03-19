@@ -36,6 +36,33 @@ brain_inbox: "C:\\Users\\horvaths\\OneDrive - Region Vorderland-Feldkirch\\Claud
 | `/vaultkeeper:brain-scan` | Vault nach team-relevanten Inhalten durchsuchen |
 | `/vaultkeeper:prepare-dokument [datei]` | Dokumente (PDF, XLSX, DOCX) fuer Brain aufbereiten |
 
+## Wie es funktioniert
+
+### Dokument-Aufbereitung (prepare-dokument)
+
+Claude liest Dokumente selbst (multimodal) — kein Python-Script, kein Informationsverlust.
+PDF, XLSX, DOCX, Bilder werden nativ gelesen und als `.json` in die Inbox geschrieben.
+
+Jede JSON-Datei enthaelt Text und Metadaten zusammen:
+```json
+{
+  "title": "Dokumenttitel",
+  "document_type": "anleitung",
+  "bereich": "v-dok",
+  "content": "Der vollstaendige extrahierte Text..."
+}
+```
+
+n8n holt die JSON aus der Inbox, chunked den Text, embedded und speichert in Qdrant.
+
+### Brain Push
+
+Wissen direkt aus dem Chat ins Brain pushen — Claude erstellt die JSON automatisch.
+
+### Brain Scan
+
+Vault nach team-relevanten Zetteln durchsuchen, User bestaeigt, dann als JSON in die Inbox.
+
 ## Skills
 
 | Skill | Trigger |
@@ -61,6 +88,5 @@ Vaultkeeper erkennt automatisch ob MCP verfuegbar ist und nutzt es.
 
 ## Voraussetzungen
 
-- Python 3.x (fuer prepare-dokument)
-- `pip install pdfplumber openpyxl python-docx` (fuer Dokumentkonvertierung)
+- Claude Code CLI
 - Obsidian + Local REST API Plugin (optional, fuer MCP)
