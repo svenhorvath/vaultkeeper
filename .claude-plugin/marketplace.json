@@ -1,7 +1,5 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "vaultkeeper",
-  "description": "Vaultkeeper Plugin fuer Claude Code",
   "owner": {
     "name": "Sven Horvath",
     "email": "sven.horvath@vorderland.at"
