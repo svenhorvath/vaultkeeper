@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "vaultkeeper",
+  "description": "Vaultkeeper Plugin fuer Claude Code",
+  "owner": {
+    "name": "Sven Horvath",
+    "email": "sven.horvath@vorderland.at"
+  },
+  "plugins": [
+    {
+      "name": "vaultkeeper",
+      "description": "Persoenliches Wissensmanagement: SvenBrain (Obsidian) als Second Brain + Vorderland Vault als Team-Wissenspipeline",
+      "version": "0.3.0",
+      "author": {
+        "name": "Sven Horvath",
+        "url": "https://github.com/svenhorvath"
+      },
+      "source": "./plugins/vaultkeeper",
+      "category": "productivity"
+    }
+  ]
+}
