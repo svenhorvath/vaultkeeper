@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Write, Grep, Glob, Bash
+allowed-tools: Read, Write, Grep, Glob
 description: "Brain nach team-relevanten Zettel durchsuchen und fuer Vault vorschlagen"
 ---
 
@@ -23,3 +23,5 @@ Den Zettelkasten nach Inhalten durchsuchen die fuer das Team relevant sind.
 
 - NIEMALS automatisch pushen — immer Bestaetigung abwarten
 - Zettel die bereits in der Inbox liegen ueberspringen (Duplikat-Check via Dateiname)
+- `~/.claude/vaultkeeper.local.md` nur LESEN, niemals aendern
+- Nur `.md`-Dateien in `05-Zettelkasten/` lesen. Symlinks ignorieren.

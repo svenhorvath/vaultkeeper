@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Write, Grep, Glob, Bash, Edit
+allowed-tools: Read, Write, Grep, Glob
 description: "Wissen ins Vorderland Vault pushen — erstellt .json in der Inbox"
 argument-hint: "[inhalt oder thema]"
 ---
@@ -7,6 +7,11 @@ argument-hint: "[inhalt oder thema]"
 # /vaultkeeper:vault
 
 Inhalt fuer das Vorderland Vault aufbereiten und als `.json` in die Inbox schreiben.
+
+## Sicherheitsregeln
+
+- `~/.claude/vaultkeeper.local.md` nur LESEN, niemals aendern
+- Vor dem Schreiben pruefen ob eine Datei mit gleichem Namen bereits in der Inbox existiert. Falls ja: Suffix `-2`, `-3` etc. anhaengen.
 
 ## Ablauf
 

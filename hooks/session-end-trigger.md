@@ -2,7 +2,7 @@
 name: session-end-trigger
 description: Erkennt Abschiedsphrasen und triggert Session-Ende Routine inkl. Brain-Capture
 event: UserPromptSubmit
-matcher: "(?i)^\\s*(ok[ae]?y?\\s*b[yi]e?|tsch[aü][us]s?|baba|ende|session\\s*beenden|bis\\s*dann|servus|pfiat\\s*di|ciao|gute\\s*nacht|feierabend|das\\s*wars?)\\s*[.!]?\\s*$"
+matcher: "(?i)^\\s*(ok[ae]?y?\\s*b[yi]e?|tsch[aü][us]s?|baba|session\\s*beenden|bis\\s*dann|servus|pfiat\\s*di|ciao|gute\\s*nacht|feierabend|das\\s*wars?)\\s*[.!]?\\s*$"
 type: prompt
 ---
 
