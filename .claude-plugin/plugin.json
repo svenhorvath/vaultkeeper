@@ -1,6 +1,6 @@
 {
   "name": "vaultkeeper",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Persoenliches Wissensmanagement: SvenBrain (Obsidian) als Second Brain + Vorderland Vault als Team-Wissenspipeline. Brain-Init/Sync fuer Projekte, ADR- und Pattern-Tracking, token-optimierte Session-Hooks.",
   "author": {
     "name": "Sven Horvath",
