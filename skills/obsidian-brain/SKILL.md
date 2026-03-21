@@ -54,7 +54,7 @@ Beim Anlegen eines neuen Zettels:
    - Kein festes Minimum/Maximum — so viele Links wie inhaltlich sinnvoll (typisch 3-5)
    - KEIN nackter `[[link]]` ohne Kontext — jeder Link braucht eine Erklaerung durch Platzierung im Satz oder Begruendung
    - Obsidians automatisches Backlinks-Pane uebernimmt Rueckverweise — keine manuellen "Backlinks"-Abschnitte
-5. **INDEX.md aktualisieren:** Zeile ergaenzen: `| dateiname | Titel | tags |`
+5. **INDEX.md aktualisieren:** Neue Zeile **oben** in die Tabelle einfuegen (neueste zuerst): `| YYYY-MM-DD | dateiname | Titel | tags |`
 
 ## CLI-Integration
 

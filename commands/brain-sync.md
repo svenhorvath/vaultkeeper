@@ -62,7 +62,7 @@ Anlegen? (ja/nein/anpassen)
 Fuer jeden bestaetigten Zettel:
 1. Datei unter `05-Zettelkasten/` erstellen mit vollstaendigem Frontmatter
 2. Skill `obsidian-brain` fuer Format-Details laden (Linking-Regeln, Frontmatter)
-3. INDEX.md aktualisieren (neue Zeile in der Tabelle)
+3. INDEX.md aktualisieren (neue Zeile **oben** in der Tabelle — chronologisch, neueste zuerst)
 
 ### Schritt 4: Projekt-MOCs anreichern (automatisch)
 
