@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Write, Grep, Glob, Bash, Edit, mcp__obsidian__obsidian_read_note, mcp__obsidian__obsidian_update_note, mcp__obsidian__obsidian_list_notes, mcp__obsidian__obsidian_global_search, mcp__obsidian__obsidian_manage_frontmatter, mcp__obsidian__obsidian_manage_tags
+allowed-tools: Read, Write, Grep, Glob, Bash, Edit
 description: "Session-Erkenntnisse extrahieren, als Zettel im SvenBrain anlegen und betroffene Projekt-MOCs automatisch anreichern. Mit --enrich-all: Batch-Modus fuer alle bestehenden Zettel → MOCs."
 argument-hint: "[optionaler fokus] [--enrich-all]"
 ---
@@ -17,8 +17,8 @@ Extrahiert Erkenntnisse aus der aktuellen Session und schreibt sie als Zettel in
 
 ## Zugriffs-Strategie
 
-1. **MCP verfuegbar?** → MCP-Tools mit vault-relativen Pfaden
-2. **MCP nicht verfuegbar?** → File-basiert mit absolutem `brain_path`
+1. **Obsidian CLI verfuegbar?** (via Bash: `obsidian version` oder `/Applications/Obsidian.app/Contents/MacOS/Obsidian version`) → CLI-Commands verwenden
+2. **CLI nicht verfuegbar?** → File-basiert mit absolutem `brain_path`
 
 ## Ablauf
 

@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Write, Grep, Glob, Bash, Edit, mcp__obsidian__obsidian_read_note, mcp__obsidian__obsidian_update_note, mcp__obsidian__obsidian_list_notes, mcp__obsidian__obsidian_global_search, mcp__obsidian__obsidian_manage_frontmatter
+allowed-tools: Read, Write, Grep, Glob, Bash, Edit
 description: "Neues Projekt im SvenBrain anlegen und CLAUDE.md im Arbeitsverzeichnis erstellen/ergaenzen"
 argument-hint: "[projektname]"
 ---
@@ -17,8 +17,8 @@ Erstellt einen Brain-Eintrag fuer ein neues Projekt und richtet die CLAUDE.md im
 
 ## Zugriffs-Strategie
 
-1. **MCP verfuegbar?** (Pruefen ob `mcp__obsidian__` Tools existieren) → MCP-Tools mit vault-relativen Pfaden verwenden
-2. **MCP nicht verfuegbar?** → File-basiert mit absolutem `brain_path` arbeiten
+1. **Obsidian CLI verfuegbar?** (via Bash: `obsidian version` oder `/Applications/Obsidian.app/Contents/MacOS/Obsidian version`) → CLI-Commands verwenden
+2. **CLI nicht verfuegbar?** → File-basiert mit absolutem `brain_path` arbeiten
 
 ## Ablauf
 
@@ -91,7 +91,7 @@ Aktiv
 
 ## Brain-Kontext
 Projekt-Eintrag: `01-Projects/[Projektname]/[projektname-kebab].md`
-Zugriff via Obsidian MCP oder Vaultkeeper.
+Zugriff via Obsidian CLI oder Vaultkeeper.
 - Vor Architektur-Entscheidungen: Brain-Eintrag lesen
 - Bei Session-Ende: Erkenntnisse im Brain festhalten
 - Patterns pruefen: `05-Zettelkasten/` (#pattern)

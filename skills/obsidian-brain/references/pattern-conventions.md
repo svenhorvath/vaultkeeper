@@ -50,4 +50,4 @@ Wo fuehrt das Pattern in die Irre?
 Patterns finden via:
 - Tag-Suche: `#pattern`
 - Dashboard.md: Dataview-Query zeigt alle Patterns
-- MCP: `obsidian_global_search` nach `tags: [pattern`
+- CLI: `obsidian search query="tags: [pattern"` oder `obsidian tags name="#pattern" verbose`

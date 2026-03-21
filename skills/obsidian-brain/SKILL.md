@@ -56,13 +56,13 @@ Beim Anlegen eines neuen Zettels:
    - Obsidians automatisches Backlinks-Pane uebernimmt Rueckverweise — keine manuellen "Backlinks"-Abschnitte
 5. **INDEX.md aktualisieren:** Zeile ergaenzen: `| dateiname | Titel | tags |`
 
-## MCP-Integration
+## CLI-Integration
 
-Pruefen ob Obsidian MCP-Tools verfuegbar sind (`mcp__obsidian__` Tools vorhanden?).
-- **JA:** MCP-Tools fuer Suche, Tags und Frontmatter verwenden (praeziser, schneller)
-- **NEIN:** File-basiert arbeiten (Read/Write/Grep Tools)
+Pruefen ob Obsidian CLI verfuegbar ist (via Bash: `obsidian version` oder `/Applications/Obsidian.app/Contents/MacOS/Obsidian version`).
+- **Erfolgreich:** CLI-Commands fuer Suche, Tags und Frontmatter verwenden (praeziser, schneller)
+- **Fehlgeschlagen:** File-basiert arbeiten (Read/Write/Grep Tools)
 
-Fuer Details zur MCP-Nutzung: `references/mcp-usage.md` lesen.
+Fuer Details zur CLI-Nutzung: `references/cli-usage.md` lesen.
 
 ## Zettel-Typen und Tags
 
@@ -104,13 +104,13 @@ Vault-relevante Wissensdomaenen: V-DOK, WebOffice, VertiGIS FM, Power Platform, 
 ## Brain durchsuchen
 
 Zum Suchen im Brain:
-1. MCP-Search nutzen (wenn verfuegbar) fuer semantische Suche
+1. Obsidian CLI nutzen (wenn verfuegbar): `obsidian search query="suchbegriff"` oder `obsidian search:context query="suchbegriff"`
 2. Sonst: Grep ueber `05-Zettelkasten/` und INDEX.md
 3. Ergebnisse mit Kontext zurueckgeben
 
 ## Weitere Referenzen
 
 - **`references/vault-conventions.md`** — Detaillierte Linking-Regeln, Tag-Hierarchie, Frontmatter-Varianten
-- **`references/mcp-usage.md`** — MCP-Tools und deren Einsatz im Brain
+- **`references/cli-usage.md`** — Obsidian CLI-Commands und deren Einsatz im Brain
 - **`references/adr-template.md`** — MADR-Format fuer Architektur-Entscheidungen
 - **`references/pattern-conventions.md`** — Wie Patterns als Zettel dokumentiert werden

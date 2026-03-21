@@ -74,19 +74,16 @@ Brain nach team-relevanten Zetteln durchsuchen, User bestaetigt, dann als JSON i
 
 **SessionStart:** Laedt automatisch den Zettelkasten-INDEX beim Start jeder Session.
 
-## MCP-Integration (optional)
+## CLI-Integration
 
-Fuer erweiterten Brain-Zugriff (semantische Suche, Tags, Frontmatter):
+Fuer erweiterten Brain-Zugriff (Suche, Tags, Frontmatter, Tasks):
 
-1. In Obsidian: Community Plugin "Local REST API" installieren
-2. In Claude Code:
-   ```bash
-   claude mcp add --scope user obsidian -e OBSIDIAN_API_KEY=KEY -e OBSIDIAN_HOST=127.0.0.1 -e OBSIDIAN_PORT=27124 -- npx obsidian-mcp-server
-   ```
+1. Obsidian v1.12.4+ installieren
+2. In Obsidian: Settings → General → Advanced → CLI aktivieren → "Register CLI"
 
-Vaultkeeper erkennt automatisch ob MCP verfuegbar ist und nutzt es.
+Vaultkeeper erkennt automatisch ob das CLI verfuegbar ist und nutzt es.
 
 ## Voraussetzungen
 
 - Claude Code CLI
-- Obsidian + Local REST API Plugin (optional, fuer MCP)
+- Obsidian v1.12.4+ mit aktiviertem CLI
