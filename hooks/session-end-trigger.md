@@ -8,21 +8,9 @@ type: prompt
 
 Der User verabschiedet sich. Fuehre die Session-Ende Routine aus:
 
-1. **Git:** Offene Commits in aktiven Projekten pruefen und committen, auf GitHub pushen.
-
+1. **Git:** Offene Aenderungen pruefen, committen, auf GitHub pushen.
 2. **project_registry.md:** Aktualisieren falls sich etwas geaendert hat.
+3. **Brain-Sync:** `/vaultkeeper:brain-sync` ausfuehren — dieser Command uebernimmt das komplette Brain-Update eigenstaendig.
+4. **Zusammenfassung:** Was wurde erledigt, was ist offen.
 
-3. **Brain-Capture:** Pruefe ob in dieser Session wertvolle Erkenntnisse entstanden sind. Unterscheide:
-   - **Architektur-Entscheidung** getroffen? → Zettel mit Tags `#adr` anlegen
-   - **Wiederverwendbares Pattern** identifiziert? → Zettel mit `#pattern` anlegen
-   - **Aus Fehler gelernt?** → Zettel mit `#lessons-learned` anlegen
-   - **Workaround dokumentiert?** → Zettel mit `#workaround` anlegen + Vault-Hinweis
-   - **Sonstige nicht-offensichtliche Erkenntnis?** → Zettel mit thematischen Tags
-   Erstelle Zettel unter `05-Zettelkasten/` mit Standard-Frontmatter und mindestens 2 Links. INDEX.md aktualisieren.
-   Falls nichts Neues: diesen Schritt kommentarlos ueberspringen.
-
-4. **Vault-Check:** Falls neue Zettel erstellt — waere davon etwas team-relevant? Hinweis auf `/vaultkeeper:vault-scan`.
-
-5. **Zusammenfassung:** Was wurde erledigt, was ist offen.
-
-Antworte mit "approve" — die Routine soll immer ausgefuehrt werden.
+Fuehre diese Schritte AUTOMATISCH aus. Antworte mit "approve".

@@ -10,8 +10,8 @@ Den Zettelkasten nach Inhalten durchsuchen die fuer das Team relevant sind.
 ## Ablauf
 
 1. Settings aus `~/.claude/vaultkeeper.local.md` lesen (Felder `brain_path` und `vault_inbox`)
-2. Alle Zettel in `05-Zettelkasten/` lesen
-3. Jeden Zettel bewerten:
+2. Alle `.md`-Dateien im gesamten Brain rekursiv lesen (`brain_path/**/*.md`)
+3. Jede Datei bewerten:
    - **Team-relevant:** Prozesse, Anleitungen, Fachkompetenz, How-Tos
    - **Nicht relevant:** Persoenliche Reflexionen, individuelle Notizen, Meinungen
 4. Kandidaten als Liste mit Begruendung anzeigen
@@ -24,4 +24,4 @@ Den Zettelkasten nach Inhalten durchsuchen die fuer das Team relevant sind.
 - NIEMALS automatisch pushen — immer Bestaetigung abwarten
 - Zettel die bereits in der Inbox liegen ueberspringen (Duplikat-Check via Dateiname)
 - `~/.claude/vaultkeeper.local.md` nur LESEN, niemals aendern
-- Nur `.md`-Dateien in `05-Zettelkasten/` lesen. Symlinks ignorieren.
+- Nur `.md`-Dateien lesen. Symlinks, `07-Templates/` und versteckte Ordner ignorieren.

@@ -61,41 +61,21 @@ Den bisherigen Gespraechsverlauf vollstaendig durchsuchen nach:
 - Wurde ein Meeting besprochen, vorbereitet oder nachbereitet?
 - Gibt es Entscheidungen, Action Items oder Teilnehmer die festgehalten werden sollen?
 
-### Schritt 2: Vorschau zeigen
+### Schritt 2: Vorschau zeigen und direkt anlegen
 
-Fuer alle identifizierten Brain-Updates eine Gesamtvorschau anzeigen:
+Kurze Vorschau ausgeben was angelegt wird (zur Transparenz), dann SOFORT anlegen — NICHT auf Bestaetigung warten.
 
 ```
-Ich moechte folgende Brain-Updates durchfuehren:
-
-📝 ZETTEL (05-Zettelkasten/):
-1. spfx-webpart-caching-pattern.md (#pattern, #spfx)
-   → SPFx WebParts cachen Daten im SessionStorage
-   → Links: [[frozen-stack-pattern]]
-
-👤 PERSONEN (06-People/):
-2. mueller.md (NEU)
-   → Thomas Mueller, Gemeinde Goetzis, GIS-Verantwortlicher
-
-📚 RESSOURCEN (03-Resources/):
-3. Tools-und-Workflows/playwright-cli-setup.md (NEU)
-   → Playwright CLI als Browser-Automation Alternative zu MCP
-
-📅 MEETINGS (09-Meetings/):
-4. 2026-03-22-abstimmung-datenmodell.md (NEU)
-   → Abstimmung Datenmodell BAV mit 3 Action Items
-
-📖 DAILY NOTE (08-Daily/):
-→ 2026-03-22.md — Session-Log wird angehaengt
-
-🔗 AUTO-ENRICHMENT (kein Approval noetig):
-→ 01-Projects/: brain-und-vault.md
-→ 02-Areas/: datenmanagement.md
-
-Anlegen? (ja/nein/anpassen)
+Brain-Sync — lege an:
+- spfx-webpart-caching-pattern.md (#pattern, #spfx)
+- mueller.md (Person, NEU)
+- Tools-und-Workflows/playwright-cli-setup.md (Ressource)
+- 2026-03-22-abstimmung-datenmodell.md (Meeting)
+- Daily Note: 2026-03-22.md
+- MOC-Enrichment: brain-und-vault.md, datenmanagement.md
 ```
 
-### Schritt 3: Nach Bestaetigung anlegen
+### Schritt 3: Anlegen
 
 Fuer jeden bestaetigten Eintrag:
 
@@ -236,10 +216,9 @@ Brain-Sync abgeschlossen:
 
 ## Wichtig
 
-- NIEMALS Zettel/Personen/Ressourcen/Meetings automatisch anlegen — immer Vorschau (Schritt 2) zeigen und Bestaetigung abwarten
-- **Ausnahme Daily Note:** Wird IMMER angelegt/ergaenzt, ohne Bestaetigung — es ist nur ein Session-Log
-- MOC-Enrichment (Schritt 4) laeuft OHNE Bestaetigung — es verlinkt nur, aendert keinen Inhalt
-- Batch-Modus (Schritt 4-batch) zeigt Vorschau weil der Umfang groesser ist
+- Brain-Sync arbeitet EIGENSTAENDIG — Vorschau zur Transparenz, aber KEINE Bestaetigung abwarten
+- Alles wird direkt angelegt: Zettel, Personen, Ressourcen, Meetings, Daily Note, MOC-Enrichment
+- Batch-Modus (--enrich-all) zeigt Vorschau weil der Umfang groesser ist — hier Bestaetigung abwarten
 - Keine Duplikate: Vor dem Anlegen pruefen ob aehnlicher Eintrag existiert (INDEX.md + Glob + Grep)
 - Lieber weniger gute Eintraege als viele duenne
 - Session-Kontext ist fluechtig — nur nicht-offensichtliches Wissen extrahieren
