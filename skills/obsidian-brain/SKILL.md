@@ -77,9 +77,10 @@ Fuer Details zur CLI-Nutzung: `references/cli-usage.md` lesen.
 Fuer ADR-Format: `references/adr-template.md` lesen.
 Fuer Pattern-Format: `references/pattern-conventions.md` lesen.
 
-## Wann automatisch Zettel anlegen
+## Wann Zettel anlegen
 
-Ohne ausdrueckliche Aufforderung einen Zettel anlegen wenn:
+Zettel werden **ausschliesslich innerhalb von `/vaultkeeper:brain-sync`** angelegt, nie direkt. Der brain-sync Skill entscheidet anhand dieser Kriterien was angelegt wird:
+
 - Eine **Architektur-Entscheidung** getroffen wird → ADR-Zettel
 - Ein **bewaehrtes Pattern** identifiziert wird → Pattern-Zettel
 - Eine **nicht-offensichtliche Erkenntnis** entsteht → Zettel mit thematischen Tags

@@ -77,12 +77,13 @@ Brain-Sync — lege an:
 
 ### Schritt 3: Anlegen
 
-Fuer jeden bestaetigten Eintrag:
+**VOR jedem Schreibvorgang** den Skill `obsidian-brain` laden (Linking-Regeln, Frontmatter-Schema, INDEX-Format). Das gilt fuer ALLE Eintragstypen, nicht nur Zettel.
+
+Fuer jeden Eintrag:
 
 **Zettel (05-Zettelkasten/):**
 1. Datei erstellen mit Template aus `07-Templates/zettel.md` (Templater-Platzhalter ersetzen)
-2. Skill `obsidian-brain` fuer Format-Details laden (Linking-Regeln, Frontmatter)
-3. INDEX.md aktualisieren (neue Zeile **oben** in der Tabelle — chronologisch, neueste zuerst)
+2. INDEX.md aktualisieren (neue Zeile **oben** in der Tabelle — chronologisch, neueste zuerst)
 
 **Personen (06-People/):**
 1. Pruefen ob Person schon existiert (Glob + Grep nach Name)
@@ -123,9 +124,9 @@ Dieser Schritt laeuft automatisch. Er verlinkt nur, aendert keinen inhaltlichen 
 
 #### 4a: Projekt-MOCs (01-Projects/)
 
-Fuer jeden in Schritt 3 angelegten Zettel:
+Fuer JEDEN in Schritt 3 angelegten oder geaenderten Eintrag (Zettel, Daily Note, Person, Ressource, Meeting) sowie fuer jede projekt-relevante Session-Aenderung (Status, Chronik, Pfade, Meilensteine):
 
-1. **Projekt identifizieren:** `source`-Feld des Zettels auswerten
+1. **Projekt identifizieren:** `source`-Feld, Arbeitsverzeichnis oder Session-Kontext auswerten
 2. **Projekt-MOC finden:** Unter `01-Projects/` nach passender MOC suchen
 3. **MOC anreichern:**
 
@@ -138,6 +139,9 @@ Fuer jeden in Schritt 3 angelegten Zettel:
 | Session hat Projekt-Status veraendert | Status | Status-Text aktualisieren |
 | Session hat Meilenstein erledigt | Timeline | Checkbox abhaken, Datum ergaenzen |
 | Neues Meeting zum Projekt | Schluessel-Dokumente | Meeting-Note verlinken |
+| Daily Note fuer diesen Tag angelegt | Entwicklungschronik | Zeile mit Datum + Zusammenfassung ergaenzen |
+| Neue Person mit Projektbezug | Beteiligte Personen | Person verlinken |
+| Neue Ressource mit Projektbezug | Schluessel-Dokumente | Ressource verlinken |
 
 4. **`updated`-Datum** im Frontmatter aktualisieren
 
@@ -159,7 +163,7 @@ Falls kein Mapping passt: Kein MOC-Update, kein Fehler.
 
 #### 4b: Area-MOCs (02-Areas/)
 
-Fuer jeden neuen Zettel pruefen ob er thematisch zu einer Area passt:
+Fuer jeden angelegten oder geaenderten Eintrag pruefen ob er thematisch zu einer Area passt:
 
 | Themen-Keywords | Area-MOC |
 |---|---|
