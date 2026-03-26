@@ -70,13 +70,15 @@ Abschnitt: [Abschnittsname]
 - Nach logischen Grenzen splitten (Kapitel, Sheets, Themenbloecke)
 - Splitplan dem User vorlegen und bestaetigen lassen
 - Kein Overlap — saubere thematische Trennung
-- Zielgroesse pro content-Feld: unter 40 KB
+- Max 1.500 Zeichen pro content-Feld (jede JSON = ein Chunk in Qdrant, n8n splittet nicht mehr)
+- Wenn ein logischer Abschnitt laenger ist: weiter splitten in Unterabschnitte
+- Lieber zwei praezise Chunks als ein grosser mit gemischtem Inhalt
 
 ## Was n8n mit der JSON macht
 
 1. n8n liest die `.json` aus der Inbox
-2. Extrahiert `content` → chunked → embedded → Qdrant
-3. Alle anderen Felder werden als `payload.metadata` in Qdrant gespeichert
+2. Jede JSON wird 1:1 als ein Punkt in Qdrant gespeichert (kein weiteres Chunking)
+3. `content` wird embedded (Dense + BM25), alle anderen Felder als `payload.metadata`
 4. Nach Ingestion wird die `.json` nach `eingepflegt/` verschoben
 
 ## Unterstuetzte Formate

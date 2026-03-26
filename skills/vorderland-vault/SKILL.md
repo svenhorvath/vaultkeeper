@@ -74,7 +74,7 @@ Eine `.json` Datei erstellen (`YYYY-MM-DD-[kebab-titel].json`):
 ```
 
 **`dokument_id`:** Identifiziert das Quelldokument. Bei Vault Push (einzelne Zettel) = gleich wie Dateiname ohne `.json`.
-Max 4.000 Zeichen im content-Feld (jede JSON = ein Chunk in Qdrant, n8n splittet nicht mehr).
+Max 1.500 Zeichen im content-Feld (jede JSON = ein Chunk in Qdrant, n8n splittet nicht mehr). Kleinere Chunks liefern praezisere Suchergebnisse bei Faktenfragen (RAG Best Practice: 256-512 Tokens).
 
 **`document_type` ableiten:**
 - `faq` — Frage + Antwort, Problemloesung, "wie mache ich X"
