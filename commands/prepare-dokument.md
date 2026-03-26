@@ -44,18 +44,59 @@ Andere Endungen ablehnen mit Hinweis an den User.
 
 ## Chunking-Architektur
 
-Das Chunking uebernimmt n8n (Recursive Character Text Splitter, 4.000 Zeichen, 500 Overlap).
-Das Plugin muss sich NICHT um Chunk-Groessen kuemmern. Die JSON-Dateien koennen beliebig gross sein.
+**Der Skill ist verantwortlich fuer das Chunking.** n8n uebernimmt KEIN Chunking mehr — es nimmt
+die JSON-Dateien 1:1 und schickt sie an OpenAI (Embedding) und Qdrant (Hybrid Upsert).
 
-**Aufgabe des Plugins:** Maximale Qualitaet der Extraktion + intelligente thematische Trennung.
-**Aufgabe von n8n:** Chunking in embedding-taugliche Stuecke.
+**Jede JSON-Datei = ein Chunk = ein Punkt in Qdrant.**
 
-Damit n8n beim Chunking keinen Kontext zerreisst, baut das Plugin **Breadcrumb-Headers** ein:
+### Chunk-Groesse
+
+- **Ziel:** 1.500–3.500 Zeichen pro Chunk (optimal fuer Embeddings und Retrieval)
+- **Maximum:** 4.000 Zeichen (harte Grenze — n8n splittet NICHT mehr nach)
+- **Minimum:** 200 Zeichen (zu kleine Chunks haben zu wenig Kontext)
+- Wenn ein Abschnitt > 4.000 Zeichen: An Absaetzen (`\n\n`) splitten, Kontext-Header wiederholen
+- Wenn ein Abschnitt < 200 Zeichen: Mit dem naechsten Abschnitt zusammenlegen
+
+### Chunk-Qualitaet
+
+Jeder Chunk muss **fuer sich allein verstaendlich** sein — als waere er das einzige Suchergebnis
+das ein Kollege sieht. Das bedeutet:
+
+1. **Kontext-Header:** Dokumenttitel + Abschnitt/Kapitelname am Anfang
+2. **Breadcrumbs:** Bei hierarchischen Dokumenten den vollen Pfad
+3. **Schlagworte:** Am Ende jedes Chunks relevante Suchbegriffe, Synonyme, Abkuerzungen
+4. **Nie mitten im Satz schneiden** — immer an Absatz- oder Satzgrenzen
+
+### Kernfakten-Chunk
+
+Bei Anleitungen und Prozess-Dokumenten: Der **erste Chunk** ist immer ein Kernfakten-Block.
+Er buendelt die wichtigsten Fakten die sonst in Details untergehen:
+
 ```
-[Dokument > Kapitel > Unterkapitel > Abschnitt]
-Inhalt des Abschnitts...
+[Dokumenttitel]
+Kernfakten
+================================================================================
+
+WICHTIG — Kernfakten:
+- [Fakt 1 — das Wichtigste zuerst]
+- [Fakt 2]
+- [Fakt 3]
+- ...
+
+Schlagworte: [relevante Suchbegriffe, Synonyme, Abkuerzungen]
 ```
-So weiss jeder Chunk wo er herkommt, auch wenn n8n ihn vom Rest trennt.
+
+Dieser Chunk stellt sicher dass faktische Fragen ("Wer ist der Antragsteller?") direkt
+beantwortet werden koennen, ohne dass die Antwort in Screenshot-Beschreibungen untergeht.
+
+### Schlagworte-Block
+
+Am Ende **jedes** Chunks einen Schlagworte-Block anfuegen:
+```
+Schlagworte: Begriff1, Begriff2, Abkuerzung1, Synonym1, ...
+```
+Diese werden von BM25 indexiert und verbessern das Retrieval bei Fachbegriffen und Abkuerzungen
+(FWP, BWST, GWP, BRV, etc.) massiv.
 
 ## Brain-Kontext
 
@@ -124,23 +165,39 @@ Erkenne ob das Dokument klare logische Abschnitte hat:
 
 **Splitplan dem User vorlegen und bestaetigen lassen.**
 
-**Splitregeln:**
-- **Klare Struktur vorhanden** → nach logischen Grenzen splitten (thematisch, nicht nach Groesse!)
-- **Keine klare Struktur** → eine einzige JSON-Datei (n8n chunked automatisch)
-- **Kein KB-Limit.** Die JSON kann beliebig gross sein. n8n uebernimmt das Chunking.
-- **Kein Overlap** zwischen Dateien — saubere thematische Trennung
+**Splitregeln nach Dokumenttyp:**
+
+| Dokumenttyp | Splitstrategie | Beispiel |
+|---|---|---|
+| **Anleitung** (nummerierte Kapitel) | Kernfakten-Chunk + 1 Chunk pro Kapitel | Grundteilung: 1 Kernfakten + 11 Kapitel = 12 JSONs |
+| **Aktenplan** (Breadcrumb-Hierarchie) | 1 Chunk pro Hauptkategorie, Breadcrumbs beibehalten | Aktenplan xx0: Alle Unterpunkte in einem Chunk |
+| **FAQ / Troubleshooting** | 1 Chunk pro Frage-Antwort-Paar (oder Problemblock) | "Reinschrift ohne Adressat" = 1 JSON |
+| **Referenz / Glossar** | 1 Chunk pro thematische Gruppe | Zustaendigkeiten: 1 Chunk pro Fachbereich |
+| **Prozess** | Kernfakten-Chunk + 1 Chunk pro Prozessschritt | Rechnungslauf: Kernfakten + 3 Schritte |
+| **Protokoll** | 1 Chunk pro Tagesordnungspunkt | Meeting: 1 Chunk pro TOP |
+| **XLSX** | 1 Chunk pro Sheet (oder Tabellenabschnitt) | Kernprozesse: 1 Chunk pro Fachbereich-Sheet |
+
+**Allgemeine Regeln:**
+- **Jeder Chunk muss fuer sich allein verstaendlich sein** — Kontext-Header + Schlagworte
+- **Max 4.000 Zeichen** — wenn ein Abschnitt groesser ist, an Absaetzen splitten
+- **Min 200 Zeichen** — zu kleine Abschnitte mit dem naechsten zusammenlegen
+- **Kein Overlap** zwischen Dateien — Kontext-Header ersetzt stumpfen Ueberlapp
+- **Screenshot-Beschreibungen** gehoeren zum Kapitel — nicht separat abspalten
 
 ### 7. JSON-Dateien erstellen
 
 **Eine `.json` Datei pro Abschnitt** in die Inbox schreiben.
 
-**Dateiname:** `YYYY-MM-DD-[originalname]-[abschnittsname].json`
-- Sprechende Namen, nicht `teil1`, `teil2`
+**Dateiname:** `YYYY-MM-DD-[originalname]-[chunk-suffix].json`
+- Sprechende Suffixe: `-kernfakten`, `-kapitel-01-einstieg`, `-kapitel-02-akt-erzeugen`
+- Nicht `teil1`, `teil2` — der Suffix muss den Inhalt beschreiben
 - Kebab-Case, keine Umlaute (oe, ae, ue)
+- Kernfakten-Chunk bekommt immer das Suffix `-kernfakten`
 
 **JSON-Struktur:**
 ```json
 {
+  "dokument_id": "YYYY-MM-DD-[kebab-titel-ohne-abschnitt]",
   "title": "[Dokumenttitel — Abschnittsname]",
   "document_type": "[aus Inhalt ableiten]",
   "bereich": "[aus Inhalt ableiten]",
@@ -149,9 +206,14 @@ Erkenne ob das Dokument klare logische Abschnitte hat:
   "erstellt_am": "YYYY-MM-DD",
   "geprueft_am": "YYYY-MM-DD",
   "berechtigung": "alle",
-  "content": "[Der vollstaendige extrahierte Text mit Breadcrumbs]"
+  "content": "[Kontext-Header + extrahierter Text + Schlagworte]"
 }
 ```
+
+**WICHTIG: `dokument_id`** ist fuer ALLE Chunks eines Dokuments IDENTISCH.
+Sie identifiziert das Quelldokument, nicht den Chunk. So kann spaeter nach Dokument
+gefiltert oder ein ganzes Dokument aus Qdrant entfernt werden.
+Beispiel: Grundteilung hat 12 Chunks, alle mit `dokument_id: "2026-03-21-vdok-anleitung-grundteilung"`.
 
 **Kontext-Header im `content`-Feld:**
 ```
@@ -159,6 +221,22 @@ Erkenne ob das Dokument klare logische Abschnitte hat:
 Abschnitt: [Abschnittsname]
 ================================================================================
 [Inhalt mit Breadcrumbs]
+
+Schlagworte: [Suchbegriffe, Synonyme, Abkuerzungen — kommasepariert]
+```
+
+**Beim Kernfakten-Chunk:**
+```
+[Dokumenttitel]
+Kernfakten
+================================================================================
+
+WICHTIG — Kernfakten:
+- [Fakt 1]
+- [Fakt 2]
+- ...
+
+Schlagworte: [alle relevanten Begriffe des gesamten Dokuments]
 ```
 
 **Metadaten-Regeln:**

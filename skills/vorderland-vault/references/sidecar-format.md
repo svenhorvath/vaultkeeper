@@ -17,7 +17,8 @@ Beispiele:
 
 ```json
 {
-  "title": "Titel des Dokuments",
+  "dokument_id": "YYYY-MM-DD-kebab-titel",
+  "title": "Titel des Dokuments — Abschnittsname",
   "document_type": "zettel|anleitung|protokoll|prozess|faq|referenz",
   "bereich": "ki|v-dok|sharepoint|bauamt-allgemein|power-platform|n8n|gis|governance|digitalisierung",
   "abteilung": "BAV",
@@ -25,7 +26,7 @@ Beispiele:
   "erstellt_am": "YYYY-MM-DD",
   "geprueft_am": "YYYY-MM-DD",
   "berechtigung": "alle|intern|fuehrung",
-  "content": "Der vollstaendige Text des Dokuments oder Abschnitts."
+  "content": "Kontext-Header + Text + Schlagworte (max 4.000 Zeichen)"
 }
 ```
 
@@ -35,7 +36,8 @@ Beispiele:
 
 | Feld | Pflicht | Wert |
 |------|---------|------|
-| title | Ja | Klarer, beschreibender Titel aus dem Inhalt |
+| dokument_id | Ja | Identifiziert das Quelldokument (NICHT den Chunk). Alle Chunks eines Dokuments teilen dieselbe ID. Format: `YYYY-MM-DD-kebab-titel`. Keine Umlaute (ae, oe, ue). |
+| title | Ja | Klarer Titel mit Abschnittsname: `"Dokumenttitel — Abschnitt"` |
 | document_type | Ja | Aus Inhalt ableiten (siehe unten) |
 | bereich | Ja | Aus Inhalt ableiten (siehe unten) |
 | abteilung | Ja | Immer `"BAV"` |
@@ -43,7 +45,7 @@ Beispiele:
 | erstellt_am | Ja | Heutiges Datum `YYYY-MM-DD` — niemals leer |
 | geprueft_am | Ja | Heutiges Datum `YYYY-MM-DD` bei neuen Dokumenten |
 | berechtigung | Ja | Standard: `"alle"` |
-| content | Ja | Vollstaendiger Text, 1:1 aus dem Originaldokument |
+| content | Ja | Kontext-Header + extrahierter Text + Schlagworte. **Max 4.000 Zeichen.** |
 
 ### document_type Entscheidung
 
@@ -68,11 +70,20 @@ Beispiele:
 
 ### content-Feld Format
 
+Jede JSON = ein Chunk = ein Punkt in Qdrant. n8n splittet NICHT mehr.
+
 ```
-[Titel]
+[Dokumenttitel]
+Abschnitt: [Abschnittsname]
 ================================================================================
 [Inhalt — vollstaendig, kein Informationsverlust]
 
-Absaetze mit Leerzeilen trennen.
-Keine Markdown-Formatierung (reiner Text fuer Embeddings).
+Schlagworte: Begriff1, Begriff2, Abkuerzung1, Synonym1
 ```
+
+**Regeln:**
+- Absaetze mit Leerzeilen trennen
+- Keine Markdown-Formatierung (reiner Text fuer Embeddings)
+- **Max 4.000 Zeichen** pro content-Feld (inkl. Header + Schlagworte)
+- Schlagworte am Ende verbessern BM25-Retrieval bei Fachbegriffen
+- Kontext-Header am Anfang stellt sicher dass der Chunk allein verstaendlich ist

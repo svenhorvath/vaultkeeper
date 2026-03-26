@@ -60,6 +60,7 @@ Eine `.json` Datei erstellen (`YYYY-MM-DD-[kebab-titel].json`):
 
 ```json
 {
+  "dokument_id": "[YYYY-MM-DD-kebab-titel]",
   "title": "[klarer, beschreibender Titel]",
   "document_type": "[aus Inhalt ableiten — siehe Regeln unten]",
   "bereich": "[aus Inhalt ableiten — siehe Regeln unten]",
@@ -68,9 +69,12 @@ Eine `.json` Datei erstellen (`YYYY-MM-DD-[kebab-titel].json`):
   "erstellt_am": "[heutiges Datum: YYYY-MM-DD]",
   "geprueft_am": "[heutiges Datum: YYYY-MM-DD]",
   "berechtigung": "alle",
-  "content": "[Titel]\n================================================================================\n[Inhalt — vollstaendig, kein Informationsverlust]"
+  "content": "[Titel]\n================================================================================\n[Inhalt — vollstaendig, kein Informationsverlust]\n\nSchlagworte: [relevante Suchbegriffe, Synonyme, Abkuerzungen]"
 }
 ```
+
+**`dokument_id`:** Identifiziert das Quelldokument. Bei Vault Push (einzelne Zettel) = gleich wie Dateiname ohne `.json`.
+Max 4.000 Zeichen im content-Feld (jede JSON = ein Chunk in Qdrant, n8n splittet nicht mehr).
 
 **`document_type` ableiten:**
 - `faq` — Frage + Antwort, Problemloesung, "wie mache ich X"
