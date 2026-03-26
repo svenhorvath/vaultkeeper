@@ -56,6 +56,14 @@ Beim Anlegen eines neuen Zettels:
    - Obsidians automatisches Backlinks-Pane uebernimmt Rueckverweise — keine manuellen "Backlinks"-Abschnitte
 5. **INDEX.md aktualisieren:** Neue Zeile **oben** in die Tabelle einfuegen (neueste zuerst): `| YYYY-MM-DD | dateiname | Titel | tags |`
 
+## Universelle Linking-Regel
+
+Gilt fuer **JEDEN Notiz-Typ** (Zettel, Daily Note, Meeting, Person, Ressource, MOC):
+
+Vor dem Schreiben bestehende Brain-Eintraege scannen (`05-Zettelkasten/INDEX.md`, `06-People/`, `01-Projects/`, `02-Areas/`, `03-Resources/`) und Treffer als `[[dateiname|Anzeigename]]` im Text verlinken. Nur verlinken wenn der Eintrag tatsaechlich existiert.
+
+Details in `references/vault-conventions.md`.
+
 ## CLI-Integration
 
 Pruefen ob Obsidian CLI verfuegbar ist (via Bash: `obsidian version` oder `/Applications/Obsidian.app/Contents/MacOS/Obsidian version`).

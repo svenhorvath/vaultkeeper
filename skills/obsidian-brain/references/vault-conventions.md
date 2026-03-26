@@ -56,6 +56,8 @@ created: YYYY-MM-DD
 ---
 ```
 
+**Linking:** Daily Notes folgen denselben Linking-Regeln wie alle anderen Notiz-Typen. Projekte, Personen, Zettel, Areas und Ressourcen die im Text erwaehnt werden, muessen als `[[wikilink|Anzeigename]]` verlinkt werden — sofern ein passender Eintrag im Brain existiert.
+
 ## Linking-Regeln
 
 ### Grundprinzip: Links brauchen Kontext

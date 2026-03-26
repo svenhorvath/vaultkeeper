@@ -79,6 +79,28 @@ Brain-Sync — lege an:
 
 **VOR jedem Schreibvorgang** den Skill `obsidian-brain` laden (Linking-Regeln, Frontmatter-Schema, INDEX-Format). Das gilt fuer ALLE Eintragstypen, nicht nur Zettel.
 
+#### Universelle Linking-Regel (gilt fuer JEDEN Eintragstyp)
+
+**Vor dem Schreiben** eines Eintrags (Zettel, Person, Ressource, Meeting, Daily Note) bestehende Brain-Eintraege scannen und als Wikilinks einsetzen:
+
+1. **Scan:** Bestehende Eintraege im Brain ermitteln:
+   - `05-Zettelkasten/INDEX.md` lesen (alle Zettel auf einen Blick)
+   - `06-People/` per Glob pruefen (Personen)
+   - `01-Projects/` per Glob pruefen (Projekte + Sub-MOCs)
+   - `02-Areas/` per Glob pruefen (Verantwortungsbereiche)
+   - `03-Resources/` per Glob pruefen (Tools, Referenzen)
+   - `09-Meetings/` bei Bezug auf vergangene Meetings
+2. **Matchen:** Jede Entitaet im Text (Personennamen, Projektnamen, Fachbegriffe, Tools, Areas) gegen bestehende Eintraege pruefen
+3. **Verlinken:** Treffer als `[[dateiname|Anzeigename]]` einsetzen (Pipe-Syntax fuer lesbaren Text):
+   - Projekte: `[[projekt-name|Anzeigename]]`
+   - Personen: `[[06-People/nachname|Vorname Nachname]]`
+   - Zettel: `[[zettel-name|Anzeigename]]`
+   - Areas: `[[area-name|Anzeigename]]`
+   - Ressourcen: `[[ressource-name|Anzeigename]]`
+4. **Kein Zwangs-Linking:** Nur verlinken wenn ein Eintrag tatsaechlich existiert — keine Links auf nicht-existierende Dateien
+
+Diese Regel ersetzt nicht die typ-spezifischen Linking-Hinweise unten, sondern ergaenzt sie. Sie stellt sicher, dass KEIN Eintrag ohne Verlinkungen geschrieben wird, wenn verlinkbare Eintraege im Brain existieren.
+
 Fuer jeden Eintrag:
 
 **Zettel (05-Zettelkasten/):**
@@ -113,7 +135,8 @@ Fuer jeden Eintrag:
 1. Dateiname: `YYYY-MM-DD.md`
 2. Wenn Datei schon existiert: Ans Ende **anhaengen** (append), nicht ueberschreiben
 3. Wenn NEU: Mit Template aus `07-Templates/daily-note.md` erstellen
-4. Session-Log eintragen:
+4. Universelle Linking-Regel anwenden (siehe oben)
+5. Session-Log eintragen:
    - Unter `## Notizen`: Was wurde in dieser Session gemacht (2-5 Bullet Points)
    - Unter `## Captures`: Interessante Links, Ideen, Randnotizen
    - Unter `## Action Items`: Offene Todos aus der Session
