@@ -70,7 +70,7 @@ Abschnitt: [Abschnittsname]
 - Nach logischen Grenzen splitten (Kapitel, Sheets, Themenbloecke)
 - Splitplan dem User vorlegen und bestaetigen lassen
 - Kein Overlap — saubere thematische Trennung
-- Ziel: 1.500–3.500 Zeichen pro content-Feld, harte Grenze 4.000 (jede JSON = ein Chunk in Qdrant, n8n splittet nicht mehr)
+- Ziel: 1.500–2.000 Zeichen pro content-Feld, harte Grenze 2.500 (jede JSON = ein Chunk in Qdrant, n8n splittet nicht mehr)
 - Wenn ein logischer Abschnitt laenger ist: weiter splitten in Unterabschnitte
 - Lieber zwei praezise Chunks als ein grosser mit gemischtem Inhalt
 - **Screenshot-lastige Dokumente (>3 Screenshots pro Kapitel):** Feiner splitten — Screenshot-Beschreibungen brauchen ~300–500 Zeichen pro Bild. Lieber ein Kapitel in 2 Chunks aufteilen als Screenshots kuerzen oder weglassen.

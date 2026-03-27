@@ -51,10 +51,10 @@ die JSON-Dateien 1:1 und schickt sie an OpenAI (Embedding) und Qdrant (Hybrid Up
 
 ### Chunk-Groesse
 
-- **Ziel:** 1.500–3.500 Zeichen pro Chunk (optimal fuer Embeddings und Retrieval)
-- **Maximum:** 4.000 Zeichen (harte Grenze — n8n splittet NICHT mehr nach)
+- **Ziel:** 1.500–2.000 Zeichen pro Chunk (Sweet Spot fuer Embeddings und Retrieval)
+- **Maximum:** 2.500 Zeichen (harte Grenze — n8n splittet NICHT mehr nach)
 - **Minimum:** 200 Zeichen (zu kleine Chunks haben zu wenig Kontext)
-- Wenn ein Abschnitt > 4.000 Zeichen: An Absaetzen (`\n\n`) splitten, Kontext-Header wiederholen
+- Wenn ein Abschnitt > 2.500 Zeichen: An Absaetzen (`\n\n`) splitten, Kontext-Header wiederholen
 - Wenn ein Abschnitt < 200 Zeichen: Mit dem naechsten Abschnitt zusammenlegen
 - **Screenshot-lastige Dokumente (>3 Screenshots pro Kapitel):** Feiner splitten — Screenshot-Beschreibungen brauchen ~300–500 Zeichen pro Bild. Lieber ein Kapitel in 2 Chunks aufteilen als Screenshots kuerzen oder weglassen.
 
@@ -180,7 +180,7 @@ Erkenne ob das Dokument klare logische Abschnitte hat:
 
 **Allgemeine Regeln:**
 - **Jeder Chunk muss fuer sich allein verstaendlich sein** — Kontext-Header + Schlagworte
-- **Max 4.000 Zeichen** — wenn ein Abschnitt groesser ist, an Absaetzen splitten
+- **Max 2.500 Zeichen** — wenn ein Abschnitt groesser ist, an Absaetzen splitten
 - **Min 200 Zeichen** — zu kleine Abschnitte mit dem naechsten zusammenlegen
 - **Kein Overlap** zwischen Dateien — Kontext-Header ersetzt stumpfen Ueberlapp
 - **Screenshot-Beschreibungen** gehoeren zum Kapitel — nicht separat abspalten
