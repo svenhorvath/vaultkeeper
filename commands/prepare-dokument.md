@@ -56,6 +56,7 @@ die JSON-Dateien 1:1 und schickt sie an OpenAI (Embedding) und Qdrant (Hybrid Up
 - **Minimum:** 200 Zeichen (zu kleine Chunks haben zu wenig Kontext)
 - Wenn ein Abschnitt > 4.000 Zeichen: An Absaetzen (`\n\n`) splitten, Kontext-Header wiederholen
 - Wenn ein Abschnitt < 200 Zeichen: Mit dem naechsten Abschnitt zusammenlegen
+- **Screenshot-lastige Dokumente (>3 Screenshots pro Kapitel):** Feiner splitten — Screenshot-Beschreibungen brauchen ~300–500 Zeichen pro Bild. Lieber ein Kapitel in 2 Chunks aufteilen als Screenshots kuerzen oder weglassen.
 
 ### Chunk-Qualitaet
 
