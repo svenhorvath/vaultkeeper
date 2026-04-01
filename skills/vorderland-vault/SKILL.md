@@ -1,6 +1,7 @@
 ---
 name: vorderland-vault
 description: Pusht Wissen ins Vorderland Vault (Team-Wissensdatenbank auf Qdrant). Trigger bei "Vault:", "ins Vault pushen", "Vault scan", "fuer das Team aufbereiten", "in die Inbox legen", "Dokument fuer Qdrant", "Dokument vorbereiten", "Datei fuer Ingestion", "Dokument splitten", "das sollte das Team wissen", "das ist relevant fuer die Kollegen".
+model: sonnet
 ---
 
 # Vorderland Vault — Wissen ins Team pushen

@@ -1,6 +1,7 @@
 ---
 name: obsidian-brain
 description: Verwaltet das SvenBrain (Obsidian) als Second Brain. Trigger bei "Zettel anlegen", "ins Brain schreiben", "Brain durchsuchen", "INDEX aktualisieren", "ADR anlegen", "Pattern dokumentieren", "Lesson Learned", "was weiss ich ueber [thema]", "Brain Status", "brain-init", "brain-sync".
+model: sonnet
 ---
 
 # Obsidian Brain — Second Brain
