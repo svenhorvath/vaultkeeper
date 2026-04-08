@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Write, Grep, Glob, Bash, Edit, mcp__mempalace__mempalace_add_drawer, mcp__mempalace__mempalace_kg_add, mcp__mempalace__mempalace_search, mcp__mempalace__mempalace_check_duplicate
+allowed-tools: Read, Write, Grep, Glob, Bash, Edit
 description: "Session-Erkenntnisse extrahieren und das gesamte SvenBrain automatisch wachsen lassen: Zettel, Projekt-MOCs, Area-MOCs, Ressourcen, Personen, Daily Notes, Meeting-Notizen. Mit --enrich-all: Batch-Modus fuer alle bestehenden Zettel → MOCs."
 argument-hint: "[optionaler fokus] [--enrich-all]"
 ---
@@ -140,72 +140,6 @@ Fuer jeden Eintrag:
    - Unter `## Notizen`: Was wurde in dieser Session gemacht (2-5 Bullet Points)
    - Unter `## Captures`: Interessante Links, Ideen, Randnotizen
    - Unter `## Action Items`: Offene Todos aus der Session
-
-### Schritt 3b: MemPalace-Sync (automatisch, ohne Bestaetigung)
-
-Wenn MemPalace MCP-Tools verfuegbar sind (`mcp__mempalace__*`), jeden in Schritt 3 angelegten Eintrag auch ins MemPalace spiegeln. Falls MCP-Tools nicht verfuegbar: Schritt ueberspringen (kein Fehler).
-
-**Wing-Mapping nach primaerer Tag-Kategorie:**
-
-| Tag-Praefix | Wing |
-|---|---|
-| `ki/rag`, `ki/retrieval` | `ki-rag` |
-| `ki/llm`, `ki/multimodal` | `ki-llm` |
-| `ki/infrastruktur`, `ki/governance` | `ki-infra` |
-| `security`, `dsgvo` | `security` |
-| `n8n` | `n8n` |
-| `claude-code`, `claude-code/plugins`, `claude-code/skills` | `claude-code` |
-| `devops`, `docker` | `devops` |
-| `webdev` | `webdev` |
-| `wissensmanagement`, `obsidian`, `pkm` | `wissensmanagement` |
-| `fuehrung`, `verwaltung`, `haltung` | `fuehrung` |
-| `entwicklung`, `architektur` | `entwicklung` |
-| `bav/*`, `power-platform`, `v-dok` | `bav` |
-| Sonstiges | `allgemein` |
-
-**Fuer jeden neuen Zettel:**
-```
-mempalace_add_drawer(
-  wing: <Wing aus Mapping>,
-  room: "zettel",
-  content: "<dateiname>: <Kernidee aus dem Zettel — 1-2 Saetze>",
-  source_file: "SvenBrain/05-Zettelkasten/<dateiname>.md"
-)
-```
-
-**Fuer jede neue Person:**
-```
-mempalace_kg_add(
-  subject: "<Vorname Nachname>",
-  predicate: "arbeitet_bei",
-  object: "<Organisation>"
-)
-mempalace_kg_add(
-  subject: "<Vorname Nachname>",
-  predicate: "rolle",
-  object: "<Rolle/Funktion>"
-)
-```
-
-**Fuer jede neue Ressource:**
-```
-mempalace_add_drawer(
-  wing: "resources",
-  room: <Unterordner als Room (z.B. "infrastructure", "ki-modelle", "tooling")>,
-  content: "<Titel>: <Was ist es, wofuer nuetzlich — 1-2 Saetze>",
-  source_file: "SvenBrain/03-Resources/<pfad>.md"
-)
-```
-
-**Fuer neue Projekt-Beziehungen (KG):**
-Wenn ein neuer Zettel einem Projekt zugeordnet wird (source-Feld), auch die Beziehung erfassen:
-```
-mempalace_kg_add(
-  subject: "<Projektname>",
-  predicate: "hat_erkenntnis",
-  object: "<Zettel-Titel>"
-)
-```
 
 ### Schritt 4: MOC-Enrichment (automatisch, ohne Bestaetigung)
 
@@ -394,7 +328,6 @@ Brain-Sync abgeschlossen:
 - X Projekt-MOCs angereichert: [Liste]
 - X Area-MOCs angereichert: [Liste]
 - Vault-Kandidaten: [liste oder "keine"]
-- MemPalace: X Drawers + Y KG-Triples synchronisiert [oder "nicht verfuegbar"]
 - Brain Map: BRAIN_MAP.md [erstellt|aktualisiert] (X Zettel, Y Hubs, Z Luecken)
 ```
 
