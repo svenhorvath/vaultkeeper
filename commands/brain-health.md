@@ -55,10 +55,35 @@ Pruefen ob INDEX.md oder MOC existiert in:
 - `03-Resources/` (jeder Unterordner)
 - `06-People/` (Gesamt-Ordner)
 
-### 5. Staleness-Report
+### 5. Staleness-Report (Smart)
 
-- Zettel mit `updated`-Datum aelter als 30 Tage: gruppiert nach Alter (30-60, 60-90, 90+ Tage)
-- Projekte mit `status: active` aber ohne Update seit 30 Tagen
+Nicht jedes Wissen veraltet gleich schnell. Die Staleness-Erkennung unterscheidet drei Kategorien:
+
+#### A. Schnelllebige Tags (Stale-Schwelle: 14 Tage)
+Tags die inherent versioniert oder tool-spezifisch sind:
+`tools/*`, `ki/infrastruktur`, `#ollama`, `#docker`, `#security`
+
+Zettel mit diesen Tags UND `updated` aelter als 14 Tage → Warnung.
+
+#### B. Normale Zettel (Stale-Schwelle: 60 Tage)
+Alles was nicht unter A oder C faellt. Gruppiert nach Alter:
+- 60-90 Tage: Gelb
+- 90-180 Tage: Orange
+- 180+ Tage: Rot
+
+#### C. Zeitlose Tags (von Staleness ausgenommen)
+Wissen das sich selten aendert — nie als stale melden:
+`#pattern`, `#lessons-learned`, `#haltung`, `#adr`, `#prinzip`
+
+#### D. Confidence-basierte Priorisierung
+Zettel mit `confidence < 0.5` UND aelter als 30 Tage → eigene Sektion "Unsicheres altes Wissen".
+Diese zuerst pruefen — niedriges Vertrauen + Alter = hoechste Veraltungswahrscheinlichkeit.
+
+#### E. Projekte
+Projekte mit `status: active` aber ohne Update seit 30 Tagen.
+
+#### F. Personen
+Personen in `06-People/` mit `updated` aelter als 90 Tage → informativ melden (Kontakt-Reminder).
 
 ### 6. Struktur-Check
 
@@ -91,15 +116,24 @@ Kritisch (X)
 - Broken Links: [[target1]] in datei.md, ...
 - Zettel ohne Tags: datei1.md, datei2.md
 
+Unsicheres altes Wissen (X) ← confidence < 0.5 + aelter als 30 Tage
+- datei.md (confidence: 0.3, updated: YYYY-MM-DD)
+
+Veraltet (X)
+- Schnelllebig (14+ Tage): datei1.md [tools/n8n], datei2.md [ki/infrastruktur]
+- Normal (60+ Tage): datei3.md (90 Tage), datei4.md (180+ Tage)
+- Aktive Projekte ohne Update: projekt.md (45 Tage)
+
 Verbesserbar (X)
 - X Verwaiste Zettel (keine eingehenden Links): [liste]
 - X Singleton-Tags: tag1, tag2, tag3
 - X Inbox-Dateien seit 7+ Tagen
+- X Personen ohne Update seit 90+ Tagen: [liste]
 
 Gesund
 - Tag-Hierarchie konsistent
 - Alle Projekt-MOCs aktuell
-- Keine Staleness-Probleme
+- X Zettel mit zeitlosen Tags von Staleness ausgenommen
 
 Tipp: Mit --fix automatisch korrigierbare Probleme beheben.
 ```
