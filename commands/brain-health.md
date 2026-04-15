@@ -85,7 +85,19 @@ Projekte mit `status: active` aber ohne Update seit 30 Tagen.
 #### F. Personen
 Personen in `06-People/` mit `updated` aelter als 90 Tage → informativ melden (Kontakt-Reminder).
 
-### 6. Struktur-Check
+### 6. Vault-Sync-Status (ADR 2026-04-15)
+
+Prueft pro Zettel/Ressource das `vault:`-Frontmatter-Feld und erzeugt drei Kategorien:
+
+- **Stale im Vault:** `updated > vault.pushed` → Inhalt im Brain neuer als im Vault, Re-Push empfohlen
+- **Synced:** `updated <= vault.pushed` → nur als Kennzahl zaehlen
+- **Nie gepusht (team-relevant?):** kein `vault:`-Block → als Kandidatenhinweis (Detail-Analyse macht `/vaultkeeper:vault-scan`)
+
+Output-Sektion: "Vault-Sync (X stale, Y synced, Z nie gepusht)" mit Liste der stale Eintraege.
+
+Kein Auto-Fix — User entscheidet via `/vaultkeeper:vault-scan` was gepusht wird.
+
+### 7. Struktur-Check
 
 - Dateien in `00-Inbox/` die seit 7+ Tagen dort liegen (nicht verarbeitet)
 - Zettel mit `type: zettel` ausserhalb von `05-Zettelkasten/`
